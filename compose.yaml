@@ -1,0 +1,6 @@
+﻿services:
+  ratesofplayers.start:
+    image: ratesofplayers.start
+    build:
+      context: .
+      dockerfile: RatesOfPlayers.Start/Dockerfile
