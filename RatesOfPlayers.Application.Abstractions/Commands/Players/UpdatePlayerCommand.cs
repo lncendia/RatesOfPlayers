@@ -8,7 +8,7 @@ namespace RatesOfPlayers.Application.Abstractions.Commands.Players;
 public class UpdatePlayerCommand : IRequest
 {
     /// <summary>
-    /// Уникальный идентификатор пользователя.
+    /// Уникальный идентификатор игрока.
     /// </summary>
     public required Guid PlayerId { get; init; }
     

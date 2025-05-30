@@ -1,14 +1,14 @@
-namespace RatesOfPlayers.Domain.Bets;
+namespace RatesOfPlayers.Application.Abstractions.DTOs.Bets;
 
 /// <summary>
-/// Агрегат ставки.
+/// Класс, представляющий данные о ставке.
 /// </summary>
-public class BetAggregate
+public class BetDto
 {
     /// <summary>
     /// Идентификатор ставки.
     /// </summary>
-    public Guid Id { get; init; } = Guid.NewGuid();
+    public required Guid Id { get; init; }
     
     /// <summary>
     /// Идентификатор игрока.
@@ -28,10 +28,10 @@ public class BetAggregate
     /// <summary>
     /// Сумма выигрыша.
     /// </summary>
-    public decimal? Prize { get; set; }
+    public decimal? Prize { get; init; }
     
     /// <summary>
     /// Дата расчёта.
     /// </summary>
-    public DateTime? SettlementDate { get; set; }
+    public DateTime? SettlementDate { get; init; }
 }

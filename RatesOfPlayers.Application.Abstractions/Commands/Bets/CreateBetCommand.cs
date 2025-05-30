@@ -1,17 +1,15 @@
-namespace RatesOfPlayers.Domain.Bets;
+using MediatR;
+using RatesOfPlayers.Domain.Transactions.Enum;
+
+namespace RatesOfPlayers.Application.Abstractions.Commands.Bets;
 
 /// <summary>
-/// Агрегат ставки.
+/// Команда для создания игрока.
 /// </summary>
-public class BetAggregate
+public class CreateBetCommand : IRequest<Guid>
 {
     /// <summary>
-    /// Идентификатор ставки.
-    /// </summary>
-    public Guid Id { get; init; } = Guid.NewGuid();
-    
-    /// <summary>
-    /// Идентификатор игрока.
+    /// Уникальный идентификатор игрока.
     /// </summary>
     public required Guid PlayerId { get; init; }
     
@@ -23,15 +21,15 @@ public class BetAggregate
     /// <summary>
     /// Дата ставки.
     /// </summary>
-    public required DateTime Date { get; init; }
-
+    public DateTime? Date { get; init; }
+    
     /// <summary>
     /// Сумма выигрыша.
     /// </summary>
-    public decimal? Prize { get; set; }
+    public decimal? Prize { get; init; }
     
     /// <summary>
     /// Дата расчёта.
     /// </summary>
-    public DateTime? SettlementDate { get; set; }
+    public DateTime? SettlementDate { get; init; }
 }

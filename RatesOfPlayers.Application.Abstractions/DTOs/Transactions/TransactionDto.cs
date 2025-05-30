@@ -1,16 +1,14 @@
-using RatesOfPlayers.Domain.Transactions.Enum;
-
-namespace RatesOfPlayers.Domain.Transactions;
+namespace RatesOfPlayers.Application.Abstractions.DTOs.Transactions;
 
 /// <summary>
-/// Агрегат транзакции.
+/// Класс, представляющий данные о транзакции.
 /// </summary>
-public class TransactionAggregate
+public class TransactionDto
 {
     /// <summary>
     /// Идентификатор транзакции.
     /// </summary>
-    public Guid Id { get; init; } = Guid.NewGuid();
+    public required Guid Id { get; init; }
     
     /// <summary>
     /// Идентификатор транзакции.
@@ -25,10 +23,10 @@ public class TransactionAggregate
     /// <summary>
     /// Дата транзакции.
     /// </summary>
-    public DateTime Date { get; private set; } = DateTime.Today;
+    public required DateTime Date { get; init; }
     
     /// <summary>
     /// Тип транзакции.
     /// </summary>
-    public required TransactionType Type { get; init; }
+    public required string Type { get; init; }
 }

@@ -32,4 +32,24 @@ public class PlayerAggregate
     /// Статус игрока.
     /// </summary>
     public Status Status { get; private set; } = Status.New;
+    
+    
+
+    /// <summary>
+    /// Пополнение баланса
+    /// </summary>
+    /// <param name="amount"></param>
+    public void DepositBallance(decimal amount)
+    {
+        Balance += amount;
+    }
+
+    /// <summary>
+    /// Снятие с баланса
+    /// </summary>
+    /// <param name="amount">Сумма</param>
+    public void WithdrawalBallance(decimal amount)
+    {
+        Balance -= amount;
+    }
 }
