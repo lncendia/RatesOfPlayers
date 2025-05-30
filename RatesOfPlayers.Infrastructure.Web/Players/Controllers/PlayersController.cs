@@ -17,7 +17,7 @@ namespace RatesOfPlayers.Infrastructure.Web.Players.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class PlayersController(ISender mediator, IMapper mapper) : ControllerBase
+public class PlayersController(ISender mediator, IMapper mapper) : Controller
 {
     /// <summary>
     /// Создаёт игрока.
