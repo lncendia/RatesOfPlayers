@@ -21,5 +21,5 @@ public class CreateTransactionCommand : IRequest<Guid>
     /// <summary>
     /// Сумма транзакции.
     /// </summary>
-    public required TransactionType Type { get; init; }
+    public required string Type { get; init; }
 }

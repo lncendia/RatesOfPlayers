@@ -30,5 +30,5 @@ public class TransactionAggregate
     /// <summary>
     /// Тип транзакции.
     /// </summary>
-    public required TransactionType Type { get; init; }
+    public required string Type { get; init; }
 }

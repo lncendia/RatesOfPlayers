@@ -31,11 +31,11 @@ public class CreateTransactionCommandHandler(
         
         // Если тип транзакции пополнение, тогда пополняем баланс на сумму из запроса
         if (request.Type == TransactionType.Deposit)
-            player.DepositBallance(request.Amount);
+            player.DepositBalance(request.Amount);
         
         // Если тип транзакции списание, тогда списываем с баланса сумму из запроса
         if (request.Type == TransactionType.Withdrawal)
-            player.WithdrawalBallance(request.Amount);
+            player.WithdrawalBalance(request.Amount);
         
         // Создаём агрегат транзакции
         var transaction = new TransactionAggregate

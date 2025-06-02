@@ -29,11 +29,11 @@ public class CreateBetCommandHandler(
             throw new PlayerNotFoundException(request.PlayerId);
         
         // Проводим списание с баланса размер ставки
-        player.WithdrawalBallance(request.Amount);
+        player.WithdrawalBalance(request.Amount);
         
         // Если уже указан выигрыш, тогда пополняем баланс на сумму из запроса
         if (request.Prize is not null) 
-            player.DepositBallance(request.Prize ?? 0); // todo
+            player.DepositBalance(request.Prize ?? 0);
         
         // Создаём агрегат ставки
         var bet = new BetAggregate

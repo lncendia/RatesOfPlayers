@@ -1,17 +1,17 @@
 namespace RatesOfPlayers.Domain.Transactions.Enum;
 
 /// <summary>
-/// Перечисление типов транзакции.
+/// Класс типов транзакции.
 /// </summary>
-public enum TransactionType
+public static class TransactionType
 {
     /// <summary>
     /// Внесение
     /// </summary>
-    Deposit = 1,
+    public const string Deposit = "deposit+";
 
     /// <summary>
     /// Снятие
     /// </summary>
-    Withdrawal = 2
+    public const string Withdrawal = "withdrawal-";
 }

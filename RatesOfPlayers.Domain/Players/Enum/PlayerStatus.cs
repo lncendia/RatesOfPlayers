@@ -1,17 +1,17 @@
 namespace RatesOfPlayers.Domain.Players.Enum;
 
 /// <summary>
-/// Перечисление типов статуса.
+/// Класс типов статуса.
 /// </summary>
-public enum Status
+public static class PlayerStatus
 {
     /// <summary>
     /// Новый
     /// </summary>
-    New = 1,
+    public const string New = "new";
 
     /// <summary>
     /// Плохой
     /// </summary>
-    Bad = 2
+    public const string Bad = "bad";
 }
