@@ -10,5 +10,5 @@ public class DeleteTransactionCommand : IRequest
     /// <summary>
     /// Уникальный идентификатор транзакции.
     /// </summary>
-    public required Guid TransactionId { get; init; }
+    public required long TransactionId { get; init; }
 }

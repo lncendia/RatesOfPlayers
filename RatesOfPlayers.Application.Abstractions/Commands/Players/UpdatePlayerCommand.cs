@@ -11,7 +11,7 @@ public class UpdatePlayerCommand : IRequest
     /// <summary>
     /// Уникальный идентификатор игрока.
     /// </summary>
-    public long PlayerId { get; init; }
+    public long Id { get; init; }
     
     /// <summary>
     /// Имя.

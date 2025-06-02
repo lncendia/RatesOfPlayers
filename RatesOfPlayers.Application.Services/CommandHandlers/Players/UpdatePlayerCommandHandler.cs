@@ -21,12 +21,16 @@ public class UpdatePlayerCommandHandler(
     public async Task Handle(UpdatePlayerCommand request, CancellationToken cancellationToken)
     {
         // Получаем игрока по идентификатору из запроса
-        var player = uow.Query<Player>().FirstOrDefault(p => p.Id == request.PlayerId);
+        var player = uow.Query<Player>().FirstOrDefault(p => p.Id == request.Id);
         
         // Если игрок не найден, выбрасываем исключение
-        if (player == null) throw new PlayerNotFoundException(request.PlayerId);
+        if (player == null) throw new PlayerNotFoundException(request.Id);
         
+        // Устанавливаем новое имя
+        player.Name = request.Name;
         
+        // Устанавливаем новый статус
+        player.Status = request.Status;
         
         // Обновляет информацию об игроке в контексте базы данных
         uow.Update(player);

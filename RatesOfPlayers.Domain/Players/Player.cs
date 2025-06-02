@@ -15,7 +15,7 @@ public class Player
     /// <summary>
     /// Имя пользователя.
     /// </summary>
-    public required string Name { get; init; }
+    public required string Name { get; set; }
     
     /// <summary>
     /// Дата регистрации.
@@ -25,5 +25,5 @@ public class Player
     /// <summary>
     /// Статус игрока.
     /// </summary>
-    public PlayerStatus Status { get; private set; } = PlayerStatus.New;
+    public PlayerStatus Status { get; set; } = PlayerStatus.New;
 }

@@ -9,7 +9,7 @@ namespace RatesOfPlayers.Application.Abstractions.Queries.Players;
 public class GetPlayerQuery : IRequest<PlayerDto>
 {
     /// <summary>
-    /// Уникальный идентификатор пользователя.
+    /// Уникальный идентификатор игрока.
     /// </summary>
     public required long Id { get; init; }
 }

@@ -4,14 +4,13 @@ using RatesOfPlayers.Application.Abstractions.Commands.Bets;
 using RatesOfPlayers.Application.Abstractions.Exceptions;
 using RatesOfPlayers.Domain;
 using RatesOfPlayers.Domain.Bets;
-using RatesOfPlayers.Domain.Players;
 
 namespace RatesOfPlayers.Application.Services.CommandHandlers.Bets;
 
 /// <summary>
-/// 
+/// Обработчик команды для изменения данных игрока
 /// </summary>
-/// <param name="uow"></param>
+/// <param name="uow">Единица работы</param>
 public class UpdateBetCommandHandler(IUnitOfWork uow) : IRequestHandler<UpdateBetCommand>
 {
     /// <summary>
@@ -22,13 +21,13 @@ public class UpdateBetCommandHandler(IUnitOfWork uow) : IRequestHandler<UpdateBe
     public async Task Handle(UpdateBetCommand request, CancellationToken cancellationToken)
     {
         // Получаем ставку по идентификатору из запроса
-        var bet = await uow.Query<Bet>().FirstOrDefaultAsync(p => p.Id == request.BetId, cancellationToken);
+        var bet = await uow.Query<Bet>().FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
 
         // Если ставка не найдена, выбрасываем исключение
         if (bet == null)
-            throw new BetNotFoundException(request.BetId);
+            throw new BetNotFoundException(request.Id);
 
-        // Устанавливаем сумму ставки, если она указана в запросе
+        // Устанавливаем сумму ставки
         bet.Amount = request.Amount;
 
         // Устанавливаем идентификатор игрока для ставки
@@ -39,6 +38,9 @@ public class UpdateBetCommandHandler(IUnitOfWork uow) : IRequestHandler<UpdateBe
 
         // Устанавливаем дату расчёта
         bet.SettlementDate = DateTime.Today;
+        
+        // Обновляем информацию о ставке в контексте базы данных
+        uow.Update(bet);
 
         // Сохраняем изменения в базе данных
         await uow.SaveChangesAsync(cancellationToken);

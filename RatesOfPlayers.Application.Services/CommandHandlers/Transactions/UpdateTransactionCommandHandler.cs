@@ -3,9 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using RatesOfPlayers.Application.Abstractions.Commands.Transactions;
 using RatesOfPlayers.Application.Abstractions.Exceptions;
 using RatesOfPlayers.Domain;
-using RatesOfPlayers.Domain.Players;
 using RatesOfPlayers.Domain.Transactions;
-using RatesOfPlayers.Domain.Transactions.ValueObjects;
 
 namespace RatesOfPlayers.Application.Services.CommandHandlers.Transactions;
 

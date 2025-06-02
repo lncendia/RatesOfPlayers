@@ -1,11 +1,13 @@
 using MediatR;
+using RatesOfPlayers.Application.Abstractions.DTOs.Transactions;
+using RatesOfPlayers.Domain.Transactions.Enums;
 
 namespace RatesOfPlayers.Application.Abstractions.Commands.Transactions;
 
 /// <summary>
 /// Команда для создания игрока.
 /// </summary>
-public class CreateTransactionCommand : IRequest<Guid>
+public class CreateTransactionCommand : IRequest<TransactionDto>
 {
     /// <summary>
     /// Уникальный идентификатор игрока.
@@ -20,5 +22,5 @@ public class CreateTransactionCommand : IRequest<Guid>
     /// <summary>
     /// Сумма транзакции.
     /// </summary>
-    public required string Type { get; init; }
+    public required TransactionType Type { get; init; }
 }

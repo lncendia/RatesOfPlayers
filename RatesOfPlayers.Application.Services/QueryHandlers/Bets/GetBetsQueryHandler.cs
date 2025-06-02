@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RatesOfPlayers.Application.Abstractions.DTOs.Bets;
@@ -11,7 +12,8 @@ namespace RatesOfPlayers.Application.Services.QueryHandlers.Bets;
 /// Обработчик запроса на получение ставок игрока
 /// </summary>
 /// <param name="uow">Единица работы</param>
-public class GetBetsQueryHandler(IUnitOfWork uow) : IRequestHandler<GetBetsQuery, IReadOnlyList<BetDto>>
+/// <param name="mapper">Маппер данных</param>
+public class GetBetsQueryHandler(IUnitOfWork uow, IMapper mapper) : IRequestHandler<GetBetsQuery, IReadOnlyList<BetDto>>
 {
     /// <summary>
     /// Метод обработчик запроса на получение ставок игрока
@@ -21,14 +23,6 @@ public class GetBetsQueryHandler(IUnitOfWork uow) : IRequestHandler<GetBetsQuery
     public async Task<IReadOnlyList<BetDto>> Handle(GetBetsQuery request, CancellationToken cancellationToken)
     {
         // Получение и проекция ставок в DTO
-        return await uow.Query<Bet>().Select(b => new BetDto
-        {
-            Id = b.Id,
-            PlayerId = b.PlayerId,
-            Amount = b.Amount,
-            Date = b.Date,
-            Prize = b.Prize,
-            SettlementDate = b.SettlementDate
-        }).ToArrayAsync(cancellationToken);
+        return await uow.Query<Bet>().Select(b => mapper.Map<BetDto>(b)).ToArrayAsync(cancellationToken);
     }
 }
