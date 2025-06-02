@@ -1,12 +1,11 @@
 using MediatR;
-using RatesOfPlayers.Application.Abstractions.DTOs.Players;
 
 namespace RatesOfPlayers.Application.Abstractions.Commands.Players;
 
 /// <summary>
 /// Команда для создания игрока.
 /// </summary>
-public class CreatePlayerCommand : IRequest<PlayerDto>
+public class CreatePlayerCommand : IRequest<long>
 {
     /// <summary>
     /// Полное имя.

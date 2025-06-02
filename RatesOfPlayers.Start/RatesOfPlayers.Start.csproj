@@ -8,24 +8,26 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+        <Content Include="..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\RatesOfPlayers.Application.Services\RatesOfPlayers.Application.Services.csproj" />
-      <ProjectReference Include="..\RatesOfPlayers.Domain\RatesOfPlayers.Domain.csproj" />
-      <ProjectReference Include="..\RatesOfPlayers.Infrastructure.Storage\RatesOfPlayers.Infrastructure.Storage.csproj" />
-      <ProjectReference Include="..\RatesOfPlayers.Infrastructure.Web\RatesOfPlayers.Infrastructure.Web.csproj" />
+        <ProjectReference Include="..\RatesOfPlayers.Application.Services\RatesOfPlayers.Application.Services.csproj"/>
+        <ProjectReference Include="..\RatesOfPlayers.Domain\RatesOfPlayers.Domain.csproj"/>
+        <ProjectReference Include="..\RatesOfPlayers.Infrastructure.Storage\RatesOfPlayers.Infrastructure.Storage.csproj"/>
+        <ProjectReference Include="..\RatesOfPlayers.Infrastructure.Web\RatesOfPlayers.Infrastructure.Web.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.5">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-      <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.5">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="9.0.0"/>
+        <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
     </ItemGroup>
 
 </Project>

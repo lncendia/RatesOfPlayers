@@ -12,28 +12,28 @@ namespace RatesOfPlayers.Application.Services.CommandHandlers.Players;
 /// </summary>
 /// <param name="uow">Единица работы</param>
 /// <param name="mapper">Маппер данных</param>
-public class CreatePlayerCommandHandler(IUnitOfWork uow, IMapper mapper) : IRequestHandler<CreatePlayerCommand, PlayerDto>
+public class CreatePlayerCommandHandler(IUnitOfWork uow, IMapper mapper) : IRequestHandler<CreatePlayerCommand, long>
 {
     /// <summary>
     /// Метод обработчик команды для создания игрока
     /// </summary>
     /// <param name="request">Команда для создания игрока</param>
     /// <param name="cancellationToken">Токен отмены операции</param>
-    public async Task<PlayerDto> Handle(CreatePlayerCommand request, CancellationToken cancellationToken)
+    public async Task<long> Handle(CreatePlayerCommand request, CancellationToken cancellationToken)
     {
-        // Создаём агрегат игрока
+        // Создаём Модель игрока
         var player = new Player
         {
             Name = request.Name,
         };
         
-        // Добавляем агрегат игрока в контекст базы данных
+        // Добавляем Модель игрока в контекст базы данных
         await uow.AddAsync(player, cancellationToken);
 
         // Сохраняем изменения в базе данных
         await uow.SaveChangesAsync(cancellationToken);
 
         // Возвращаем идентификатор созданного игрока
-        return mapper.Map<PlayerDto>(player);
+        return player.Id;
     }
 }

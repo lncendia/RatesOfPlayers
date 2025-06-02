@@ -1,3 +1,5 @@
+using RatesOfPlayers.Domain.Players.Enums;
+
 namespace RatesOfPlayers.Application.Abstractions.DTOs.Players;
 
 /// <summary>
@@ -28,5 +30,5 @@ public class PlayerDto
     /// <summary>
     /// Статус игрока.
     /// </summary>
-    public required string Status { get; init; }
+    public required PlayerStatus Status { get; init; }
 }

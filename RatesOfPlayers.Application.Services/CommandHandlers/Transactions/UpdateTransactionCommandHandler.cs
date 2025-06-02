@@ -37,6 +37,9 @@ public class UpdateTransactionCommandHandler(
 
         // Устанавливаем идентификатор игрока для транзакции
         transaction.PlayerId = request.PlayerId;
+        
+        // Устанавливаем дату транзакции
+        transaction.Date = request.Date;
 
         // Сохраняем изменения в базе данных
         await uow.SaveChangesAsync(cancellationToken);

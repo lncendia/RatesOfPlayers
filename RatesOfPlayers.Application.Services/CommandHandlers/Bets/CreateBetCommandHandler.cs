@@ -21,8 +21,15 @@ public class CreateBetCommandHandler(IUnitOfWork uow, IMapper mapper) : IRequest
     /// <param name="cancellationToken">Токен отмены операции</param>
     public async Task<BetDto> Handle(CreateBetCommand request, CancellationToken cancellationToken)
     {
-        // Создаём агрегат ставки
-        var bet = mapper.Map<Bet>(request);
+        // Создаём Модель ставки
+        var bet = new Bet
+        {
+            PlayerId = request.PlayerId,
+            Amount = request.Amount,
+            Date = request.Date,
+            Prize = request.Prize,
+            SettlementDate = request.SettlementDate
+        };
 
         // Добавляем транзакцию в базу данных
         await uow.AddAsync(bet, cancellationToken);

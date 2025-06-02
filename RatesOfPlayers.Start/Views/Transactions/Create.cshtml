@@ -1,12 +1,13 @@
-@model RatesOfPlayers.Infrastructure.Web.Transactions.Models.CreateTransactionViewModel
+@using RatesOfPlayers.Infrastructure.Web.Transactions.Enums
+@model RatesOfPlayers.Infrastructure.Web.Transactions.ViewModels.CreateTransactionViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Новая транзакция";
 }
 
-<h1>Create</h1>
+<h1>Новая транзакция</h1>
 
-<h4>CreateTransactionViewModel</h4>
+<h4>Создание новой транзакции</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -23,13 +24,27 @@
                 <span asp-validation-for="Amount" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <select asp-for="Type" 
+                        asp-items="Html.GetEnumSelectList<TransactionTypeForView>()" 
+                        class="form-control">
+                    <option value="">Выберите тип</option>
+                </select>
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group my-3">
+                <input type="submit" value="Создать" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">К списку</a>
 </div>
 

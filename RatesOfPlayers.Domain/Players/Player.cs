@@ -3,7 +3,7 @@ using RatesOfPlayers.Domain.Players.Enums;
 namespace RatesOfPlayers.Domain.Players;
 
 /// <summary>
-/// Агрегат игрока.
+/// Модель игрока.
 /// </summary>
 public class Player
 {

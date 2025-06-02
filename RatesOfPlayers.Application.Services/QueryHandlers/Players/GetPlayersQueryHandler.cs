@@ -1,4 +1,5 @@
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RatesOfPlayers.Application.Abstractions.DTOs.Players;
@@ -12,7 +13,6 @@ namespace RatesOfPlayers.Application.Services.QueryHandlers.Players;
 /// Обработчик запроса на получение данных игроков
 /// </summary>
 /// <param name="uow">Единица работы</param>
-/// <param name="mapper">Маппер данных</param>
 public class GetPlayersQueryHandler(IUnitOfWork uow, IMapper mapper) : IRequestHandler<GetPlayersQuery, IReadOnlyList<PlayerDto>>
 {
     /// <summary>
@@ -23,6 +23,8 @@ public class GetPlayersQueryHandler(IUnitOfWork uow, IMapper mapper) : IRequestH
     public async Task<IReadOnlyList<PlayerDto>> Handle(GetPlayersQuery request, CancellationToken cancellationToken)
     {
         // Получение и проекция игроков в DTO
-        return await uow.Query<Player>().Select(b => mapper.Map<PlayerDto>(b)).ToArrayAsync(cancellationToken);
+        return await uow.Query<Player>()
+            .ProjectTo<PlayerDto>(mapper.ConfigurationProvider)
+            .ToArrayAsync(cancellationToken);
     }
 }

@@ -1,77 +1,169 @@
 using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RatesOfPlayers.Application.Abstractions.Commands.Players;
-using RatesOfPlayers.Application.Abstractions.DTOs.Players;
 using RatesOfPlayers.Application.Abstractions.Queries.Players;
 using RatesOfPlayers.Infrastructure.Web.Players.ViewModels;
 
 namespace RatesOfPlayers.Infrastructure.Web.Players.Controllers;
 
 /// <summary>
-/// Контроллер управления игроками
+/// Контроллер для управления игроками (CRUD-операции)
 /// </summary>
-/// <param name="mediator">Медиатор</param>
-/// <param name="mapper">Маппер</param>
+/// <param name="mediator">Медиатор для обработки CQRS-запросов</param>
+/// <param name="mapper">Автомаппер для преобразования моделей</param>
 public class PlayersController(ISender mediator, IMapper mapper) : Controller
 {
     /// <summary>
-    /// Создаёт игрока.
+    /// Отображает список всех игроков
     /// </summary>
-    /// <param name="model">Модель данных игрока.</param>
-    /// <param name="token">Токен для отмены операции.</param> 
-    /// <response code="200">Команда успешно выполнена</response> 
-    /// <response code="400">Некорректные входные данные или невалидная команда</response>
-    /// <response code="500">Возникла ошибка на сервере</response>
+    /// <returns>Представление со списком игроков</returns>
+    public async Task<ActionResult> Index()
+    {
+        // Создание запроса на получение списка игроков
+        var query = new GetPlayersQuery();
+        
+        // Отправка запроса через медиатор
+        var players = await mediator.Send(query);
+        
+        // Преобразование данных в ViewModel
+        var viewModel = mapper.Map<IEnumerable<PlayerViewModel>>(players);
+        
+        // Возврат представления с данными
+        return View(viewModel);
+    }
+
+    /// <summary>
+    /// Отображает детальную информацию об игроке
+    /// </summary>
+    /// <param name="id">ID игрока</param>
+    /// <returns>Представление с деталями игрока</returns>
+    public async Task<ActionResult> Details(int id)
+    {
+        // Создание запроса с указанным ID игрока
+        var query = new GetPlayerQuery { Id = id };
+        
+        // Отправка запроса через медиатор
+        var players = await mediator.Send(query);
+        
+        // Преобразование данных в ViewModel
+        var viewModel = mapper.Map<PlayerViewModel>(players);
+        
+        // Возврат представления с данными
+        return View(viewModel);
+    }
+
+    /// <summary>
+    /// Отображает форму создания нового игрока
+    /// </summary>
+    /// <returns>Пустая форма создания</returns>
+    public ActionResult Create()
+    {
+        return View();
+    }
+
+    /// <summary>
+    /// Обрабатывает данные формы создания игрока
+    /// </summary>
+    /// <param name="model">Данные игрока из формы</param>
+    /// <returns>Перенаправление на страницу деталей при успехе, возврат формы при ошибке</returns>
     [HttpPost]
-    public async Task CreatePlayer(PlayerViewModel model, CancellationToken token)
+    [ValidateAntiForgeryToken]
+    public async Task<ActionResult> Create(CreatePlayerViewModel model)
     {
-        // Создаем команду
+        // Проверка валидности модели
+        if (!ModelState.IsValid) return View(model);
+        
+        // Преобразование ViewModel в команду
         var command = mapper.Map<CreatePlayerCommand>(model);
-
-        // Отправляем команду медиатору на создание игрока
-        await mediator.Send(command, token);
+        
+        // Отправка команды через медиатор и получение ID нового игрока
+        var id = await mediator.Send(command);
+        
+        // Перенаправление на страницу деталей
+        return RedirectToAction(nameof(Details), new { id });
     }
-    
-    /// <summary>
-    /// Изменяет игрока.
-    /// </summary>
-    /// <param name="playerId">Идентификатор игрока.</param>
-    /// <param name="model">Модель данных игрока.</param>
-    /// <param name="token">Токен для отмены операции.</param> 
-    /// <response code="200">Команда успешно выполнена</response> 
-    /// <response code="400">Некорректные входные данные или невалидная команда</response>
-    /// <response code="500">Возникла ошибка на сервере</response>
-    [HttpPut]
-    public async Task UpdatePlayer(long playerId, PlayerViewModel model, CancellationToken token)
-    {
-        // Создаем команду
-        var command = mapper.Map<UpdatePlayerCommand>(model, 
-            opt => opt.Items["PlayerId"] = playerId);
 
-        // Отправляем команду медиатору на обновление данных игрока
-        await mediator.Send(command, token);
+    /// <summary>
+    /// Отображает форму редактирования игрока
+    /// </summary>
+    /// <param name="id">ID редактируемого игрока</param>
+    /// <returns>Форма редактирования с заполненными данными</returns>
+    public async Task<ActionResult> Edit(int id)
+    {
+        // Создание запроса с указанным ID
+        var query = new GetPlayerQuery { Id = id };
+        
+        // Отправка запроса через медиатор
+        var players = await mediator.Send(query);
+        
+        // Преобразование данных в ViewModel для редактирования
+        var viewModel = mapper.Map<EditPlayerViewModel>(players);
+        
+        // Возврат представления с данными
+        return View(viewModel);
     }
-    
-    /// <summary>
-    /// Получает игрока.
-    /// </summary>
-    /// <param name="playerId">Идентификатор игрока.</param>
-    /// <param name="token">Токен для отмены операции.</param> 
-    /// <response code="200">Команда успешно выполнена</response> 
-    /// <response code="400">Некорректные входные данные или невалидная команда</response>
-    /// <response code="500">Возникла ошибка на сервере</response>
-    [HttpGet]
-    public async Task<PlayerDto> GetPlayer(long playerId, CancellationToken token)
-    {
-        // Создаем запрос
-        var query = new GetPlayerQuery
-        {
-            Id = playerId
-        };
 
-        // Отправляем запрос медиатору на получение игрока
-        return await mediator.Send(query, token);
+    /// <summary>
+    /// Обрабатывает данные формы редактирования
+    /// </summary>
+    /// <param name="id">ID игрока</param>
+    /// <param name="model">Обновленные данные игрока</param>
+    /// <returns>Перенаправление на страницу деталей при успехе, возврат формы при ошибке</returns>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<ActionResult> Edit(int id, EditPlayerViewModel model)
+    {
+        // Проверка валидности модели
+        if (!ModelState.IsValid) return View(model);
+        
+        // Преобразование ViewModel в команду с добавлением ID
+        var command = mapper.Map<UpdatePlayerCommand>(model, opt => opt.Items.Add("id", id));
+        
+        // Отправка команды через медиатор
+        await mediator.Send(command);
+        
+        // Перенаправление на страницу деталей
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
+    /// <summary>
+    /// Отображает форму подтверждения удаления
+    /// </summary>
+    /// <param name="id">ID игрока для удаления</param>
+    /// <returns>Представление с подтверждением удаления</returns>
+    public async Task<ActionResult> Delete(int id)
+    {
+        // Создание запроса с указанным ID
+        var query = new GetPlayerQuery { Id = id };
+        
+        // Отправка запроса через медиатор
+        var players = await mediator.Send(query);
+        
+        // Преобразование данных в ViewModel
+        var viewModel = mapper.Map<PlayerViewModel>(players);
+        
+        // Возврат представления с данными
+        return View(viewModel);
+    }
+
+    /// <summary>
+    /// Обрабатывает удаление игрока
+    /// </summary>
+    /// <param name="id">ID игрока</param>
+    /// <param name="_">Неиспользуемый параметр (требуется для маршрутизации)</param>
+    /// <returns>Перенаправление на список игроков</returns>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<ActionResult> Delete(int id, IFormCollection _)
+    {
+        // Создание команды на удаление
+        var command = new DeletePlayerCommand { Id = id };
+        
+        // Отправка команды через медиатор
+        await mediator.Send(command);
+        
+        // Перенаправление на список игроков
+        return RedirectToAction(nameof(Index));
     }
 }

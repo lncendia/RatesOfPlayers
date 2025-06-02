@@ -10,5 +10,5 @@ public class DeletePlayerCommand : IRequest
     /// <summary>
     /// Уникальный идентификатор игрока.
     /// </summary>
-    public required long PlayerId { get; init; }
+    public required long Id { get; init; }
 }

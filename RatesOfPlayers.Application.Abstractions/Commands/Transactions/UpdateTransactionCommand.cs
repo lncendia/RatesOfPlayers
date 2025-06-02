@@ -24,6 +24,11 @@ public class UpdateTransactionCommand : IRequest
     public required decimal Amount { get; init; }
     
     /// <summary>
+    /// Дата транзакции.
+    /// </summary>
+    public required DateTime Date { get; init; }
+    
+    /// <summary>
     /// Тип транзакции.
     /// </summary>
     public required TransactionType Type { get; init; }

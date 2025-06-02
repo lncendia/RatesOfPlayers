@@ -37,7 +37,7 @@ public class UpdateBetCommandHandler(IUnitOfWork uow) : IRequestHandler<UpdateBe
         bet.Prize = request.Prize;
 
         // Устанавливаем дату расчёта
-        bet.SettlementDate = DateTime.Today;
+        bet.SettlementDate = request.SettlementDate;
         
         // Обновляем информацию о ставке в контексте базы данных
         uow.Update(bet);

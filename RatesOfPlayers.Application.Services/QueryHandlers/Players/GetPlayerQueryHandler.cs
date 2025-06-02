@@ -1,4 +1,5 @@
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RatesOfPlayers.Application.Abstractions.DTOs.Players;
@@ -14,9 +15,7 @@ namespace RatesOfPlayers.Application.Services.QueryHandlers.Players;
 /// </summary>
 /// <param name="uow">Единица работы</param>
 /// <param name="mapper">Маппер данных</param>
-public class GetPlayerQueryHandler(
-    IUnitOfWork uow,
-    IMapper mapper) : IRequestHandler<GetPlayerQuery, PlayerDto>
+public class GetPlayerQueryHandler(IUnitOfWork uow, IMapper mapper) : IRequestHandler<GetPlayerQuery, PlayerDto>
 {
     /// <summary>
     /// Метод обработчик запроса на получение данных игрока
@@ -26,13 +25,12 @@ public class GetPlayerQueryHandler(
     public async Task<PlayerDto> Handle(GetPlayerQuery request, CancellationToken cancellationToken)
     {
         // Получаем игрока по идентификатору из запроса
-        var player = await uow.Query<Player>().FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
+        var player = await uow
+            .Query<Player>()
+            .ProjectTo<PlayerDto>(mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
         
-        // Если игрок не найден, выбрасываем исключение
-        if (player == null)
-            throw new PlayerNotFoundException(request.Id);
-
         // Возвращаем проекцию игрока в DTO
-        return mapper.Map<PlayerDto>(player); 
+        return player ?? throw new PlayerNotFoundException(request.Id); 
     }
 }

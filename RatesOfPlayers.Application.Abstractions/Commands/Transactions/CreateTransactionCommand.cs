@@ -20,6 +20,11 @@ public class CreateTransactionCommand : IRequest<TransactionDto>
     public required decimal Amount { get; init; }
     
     /// <summary>
+    /// Дата транзакции.
+    /// </summary>
+    public required DateTime Date { get; init; }
+    
+    /// <summary>
     /// Сумма транзакции.
     /// </summary>
     public required TransactionType Type { get; init; }

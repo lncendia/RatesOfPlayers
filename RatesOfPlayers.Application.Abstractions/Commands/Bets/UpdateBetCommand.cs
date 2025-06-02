@@ -25,5 +25,10 @@ public class UpdateBetCommand : IRequest
     /// <summary>
     /// Сумма выигрыша.
     /// </summary>
-    public decimal? Prize { get; init; }
+    public required decimal Prize { get; init; }
+    
+    /// <summary>
+    /// Дата расчёта.
+    /// </summary>
+    public required DateTime SettlementDate { get; set; }
 }

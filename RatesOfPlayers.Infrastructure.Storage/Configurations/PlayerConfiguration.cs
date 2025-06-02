@@ -5,7 +5,7 @@ using RatesOfPlayers.Domain.Players;
 namespace RatesOfPlayers.Infrastructure.Storage.Configurations;
 
 /// <summary>
-/// Конфигурация Fluent API для сущности PlayerAggregate.
+/// Конфигурация таблицы игроков в базе данных.
 /// </summary>
 public class PlayerConfiguration : IEntityTypeConfiguration<Player>
 {
@@ -15,12 +15,31 @@ public class PlayerConfiguration : IEntityTypeConfiguration<Player>
     /// <param name="builder">Строитель для настройки таблицы.</param>
     public void Configure(EntityTypeBuilder<Player> builder)
     {
-        // Указываем имя таблицы в БД для хранения статей
+        // Указываем имя таблицы в БД
         builder.ToTable("Players");
         
-        // Настраиваем поле Id как первичный ключ статьи
-        builder.HasKey(r => r.Id);
+        // Настраиваем первичный ключ
+        builder.HasKey(p => p.Id);
         
-        // todo
+        // Настраиваем свойства
+        builder.Property(p => p.Id)
+            .ValueGeneratedOnAdd();
+        
+        builder.Property(p => p.Name)
+            .HasMaxLength(100) // Ограничение длины имени
+            .IsRequired();
+        
+        // Индексы для ускорения запросов
+        builder.HasIndex(p => p.Name).IsUnique();
+        
+
+        builder.HasIndex(b => b.RegistrationDate);
+
+        builder.HasIndex(p => p.Status);
+        
+        // Проверочные ограничения
+        builder.ToTable(t => t.HasCheckConstraint(
+            "CK_Players_Name_Length", 
+            "LENGTH(Name) >= 3")); // Минимальная длина имени 3 символа
     }
 }

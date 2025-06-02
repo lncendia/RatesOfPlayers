@@ -21,10 +21,10 @@ public class DeletePlayerCommandHandler(IUnitOfWork uow) : IRequestHandler<Delet
     public async Task Handle(DeletePlayerCommand request, CancellationToken cancellationToken)
     {
         // Получаем игрока по идентификатору из запроса
-        var player = await uow.Query<Player>().FirstOrDefaultAsync(p => p.Id == request.PlayerId, cancellationToken);
+        var player = await uow.Query<Player>().FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
         
         // Если игрок не найден, выбрасываем исключение
-        if (player == null) throw new PlayerNotFoundException(request.PlayerId);
+        if (player == null) throw new PlayerNotFoundException(request.Id);
         
         // Удаляем игрока из контекста базы данных
         await uow.DeleteAsync(player, cancellationToken);

@@ -21,15 +21,15 @@ public class CreateBetCommand : IRequest<BetDto>
     /// <summary>
     /// Дата ставки.
     /// </summary>
-    public DateTime? Date { get; init; }
+    public required DateTime Date { get; init; }
     
     /// <summary>
     /// Сумма выигрыша.
     /// </summary>
-    public decimal? Prize { get; init; }
+    public required decimal Prize { get; init; }
     
     /// <summary>
     /// Дата расчёта.
     /// </summary>
-    public DateTime? SettlementDate { get; init; }
+    public required DateTime SettlementDate { get; init; }
 }

@@ -1,7 +1,7 @@
 namespace RatesOfPlayers.Domain.Bets;
 
 /// <summary>
-/// Агрегат ставки.
+/// Модель ставки.
 /// </summary>
 public class Bet
 {
@@ -28,10 +28,10 @@ public class Bet
     /// <summary>
     /// Сумма выигрыша.
     /// </summary>
-    public decimal? Prize { get; set; }
+    public required decimal Prize { get; set; }
     
     /// <summary>
     /// Дата расчёта.
     /// </summary>
-    public DateTime? SettlementDate { get; set; }
+    public required DateTime SettlementDate { get; set; }
 }
