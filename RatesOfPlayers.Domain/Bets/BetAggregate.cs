@@ -13,12 +13,12 @@ public class BetAggregate
     /// <summary>
     /// Идентификатор игрока.
     /// </summary>
-    public required Guid PlayerId { get; init; }
+    public required Guid PlayerId { get; set; }
     
     /// <summary>
     /// Сумма ставки.
     /// </summary>
-    public required decimal Amount { get; init; }
+    public required decimal Amount { get; set; }
     
     /// <summary>
     /// Дата ставки.

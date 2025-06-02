@@ -13,12 +13,12 @@ public class UpdateTransactionCommand : IRequest
     public required Guid TransactionId { get; init; }
     
     /// <summary>
-    /// Идентификатор транзакции.
+    /// Идентификатор игрока.
     /// </summary>
     public Guid? PlayerId { get; init; }
     
     /// <summary>
-    /// Идентификатор транзакции.
+    /// Сумма транзакции.
     /// </summary>
     public decimal? Amount { get; init; }
     
