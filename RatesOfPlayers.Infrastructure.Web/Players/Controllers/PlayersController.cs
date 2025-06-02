@@ -44,7 +44,7 @@ public class PlayersController(ISender mediator, IMapper mapper) : Controller
     /// <response code="400">Некорректные входные данные или невалидная команда</response>
     /// <response code="500">Возникла ошибка на сервере</response>
     [HttpPut]
-    public async Task UpdatePlayer(long PlayerId, PlayerViewModel model, CancellationToken token)
+    public async Task UpdatePlayer(long playerId, PlayerViewModel model, CancellationToken token)
     {
         // Создаем команду
         var command = mapper.Map<UpdatePlayerCommand>(model, 
@@ -63,7 +63,7 @@ public class PlayersController(ISender mediator, IMapper mapper) : Controller
     /// <response code="400">Некорректные входные данные или невалидная команда</response>
     /// <response code="500">Возникла ошибка на сервере</response>
     [HttpGet]
-    public async Task<PlayerDto> GetPlayer(long PlayerId, CancellationToken token)
+    public async Task<PlayerDto> GetPlayer(long playerId, CancellationToken token)
     {
         // Создаем запрос
         var query = new GetPlayerQuery

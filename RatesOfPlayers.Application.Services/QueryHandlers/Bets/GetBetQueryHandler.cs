@@ -19,20 +19,20 @@ public class GetBetQueryHandler(
     IMapper mapper) : IRequestHandler<GetBetQuery, BetDto>
 {
     /// <summary>
-    /// Метод обработчик запроса на получение данных игрока
+    /// Метод обработчик запроса на получение данных ставки
     /// </summary>
-    /// <param name="request">Запрос на получение данных игрока</param>
+    /// <param name="request">Запрос на получение данных ставки</param>
     /// <param name="cancellationToken">Токен отмены операции</param>
     public async Task<BetDto> Handle(GetBetQuery request, CancellationToken cancellationToken)
     {
-        // Получаем игрока по идентификатору из запроса
+        // Получаем ставку по идентификатору из запроса
         var bet = await uow.Query<Bet>().FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
         
-        // Если игрок не найден, выбрасываем исключение
+        // Если ставка не найдена, выбрасываем исключение
         if (bet == null)
             throw new BetNotFoundException(request.Id);
 
-        // Возвращаем идентификатор созданного игрока
+        // Возвращаем проекцию ставки в DTO
         return mapper.Map<BetDto>(bet); 
     }
 }

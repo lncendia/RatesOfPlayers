@@ -4,7 +4,7 @@ using RatesOfPlayers.Application.Abstractions.DTOs.Bets;
 namespace RatesOfPlayers.Application.Abstractions.Queries.Bets;
 
 /// <summary>
-/// Запрос на получение игрока.
+/// Запрос на получение ставки.
 /// </summary>
 public class GetBetQuery : IRequest<BetDto>
 {

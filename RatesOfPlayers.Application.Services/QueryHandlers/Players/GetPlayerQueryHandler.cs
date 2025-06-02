@@ -32,7 +32,7 @@ public class GetPlayerQueryHandler(
         if (player == null)
             throw new PlayerNotFoundException(request.Id);
 
-        // Возвращаем идентификатор созданного игрока
+        // Возвращаем проекцию игрока в DTO
         return mapper.Map<PlayerDto>(player); 
     }
 }
