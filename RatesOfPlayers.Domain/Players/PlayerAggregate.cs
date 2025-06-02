@@ -51,4 +51,13 @@ public class PlayerAggregate
     {
         Balance -= amount;
     }
+
+    /// <summary>
+    /// Изменение статуса игрока
+    /// </summary>
+    /// <param name="status">Статус игрока</param>
+    public void SetStatus(string status)
+    {
+        Status = status;
+    }
 }

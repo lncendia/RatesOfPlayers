@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace RatesOfPlayers.Domain.Players.ValueObjects;
 
 /// <summary>
@@ -8,7 +10,7 @@ public static class PlayerStatus
     /// <summary>
     /// Словарь для сопоставления ключей статусов с их значениями
     /// </summary>
-    private readonly static Dictionary<string, string> StatusDictionary = new Dictionary<string, string>
+    private static readonly Dictionary<string, string> StatusDictionary = new Dictionary<string, string>
     {
         {"New", New},
         {"Bad", Bad},
@@ -28,13 +30,11 @@ public static class PlayerStatus
     /// Получает значение статуса по ключу.
     /// </summary>
     /// <param name="key">Ключ статуса.</param>
-    /// <returns>Значение статуса или null, если ключ не найден.</returns>
-    public static string? TryGet(string key)
+    /// <param name="value">Возвращаемое значение.</param>
+    /// <returns>True если ключ найден иначе false.</returns>
+    public static bool TryGetValue(string key, [MaybeNullWhen(false)] out string value)
     {
         // Пытается найти значение статуса в словаре по ключу
-        StatusDictionary.TryGetValue(key, out var value);   
-        
-        // Возвращает найденное значение или null, если ключ отсутствует
-        return value;
+        return StatusDictionary.TryGetValue(key, out value);   
     }
 }

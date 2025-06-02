@@ -40,19 +40,16 @@ public class UpdatePlayerCommandHandler(
         if(request.ThirdName != null)
             player.Name.ThirdName = request.ThirdName;
         
-        var statusDictionary = new []
-        {
-            PlayerStatus.New,
-            PlayerStatus.Bad
-        };
-        
         // Обновляем отчество игрока, если оно указано в запросе
         if (request.Status != null)
         {
-            if (statusDictionary.Contains(request.Status))
-                player.Name.ThirdName = request.ThirdName;
-            else
+            // Проверяем, существует ли указанный статус в словаре PlayerStatus
+            if (!PlayerStatus.TryGetValue(request.Status, out var status))
                 throw new UnknownPlayerStatusException(request.Status);
+            
+            // Устанавливаем новый статус для игрока
+            player.SetStatus(status);
+            
         }
 
         // Обновляет информацию об игроке в контексте базы данных

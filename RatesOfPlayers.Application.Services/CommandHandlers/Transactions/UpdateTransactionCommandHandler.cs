@@ -30,28 +30,33 @@ public class UpdateTransactionCommandHandler(
         if (transaction is null)
             throw new TransactionNotFoundException(request.TransactionId);
         
-        //
+        // Устанавливаем сумму транзакции, если она указана в запросе
         if (request.Amount is not null)
             transaction.Amount = request.Amount.Value;
 
+        // Устанавливаем тип транзакции, если он указан в запросе
         if (request.Type is not null)
         {
-            if (TransactionType.TryGet(request.Type) is not null)
-            transaction.Type = request.Type;
+            // Проверяем, существует ли указанный тип транзакции в словаре TransactionType
+            if (!TransactionType.TryGetValue(request.Type, out var type))
+                throw new UnknownTransactionTypeException(request.Type);
+            
+            // Устанавливаем тип транзакции
+            transaction.Type = type;
         }
         
-        //
+        // Устанавливаем идентификатор игрока, если он указан в запросе
         if (request.PlayerId is not null)
         {
-            //
+            // Асинхронно ищем игрока по идентификатору в базе данных
             var player = await uow.Query<PlayerAggregate>()
                 .FirstOrDefaultAsync(p=>p.Id == request.PlayerId, cancellationToken);
             
-            //
+            // Проверяем, найден ли игрок, и выбрасываем исключение, если нет
             if (player is null)
                 throw new PlayerNotFoundException(request.PlayerId.Value);
             
-            //
+            // Устанавливаем идентификатор игрока для транзакции
             transaction.PlayerId = request.PlayerId.Value;
         }
 
