@@ -7,13 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="MediatR" Version="12.5.0" />
-      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+      <ProjectReference Include="..\RatesOfPlayers.Application.Abstractions\RatesOfPlayers.Application.Abstractions.csproj" />
+      <ProjectReference Include="..\RatesOfPlayers.Domain\RatesOfPlayers.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\RatesOfPlayers.Application.Abstractions\RatesOfPlayers.Application.Abstractions.csproj" />
-      <ProjectReference Include="..\RatesOfPlayers.Domain\RatesOfPlayers.Domain.csproj" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
     </ItemGroup>
 
 </Project>

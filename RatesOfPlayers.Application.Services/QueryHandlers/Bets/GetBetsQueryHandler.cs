@@ -1,12 +1,9 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RatesOfPlayers.Application.Abstractions.DTOs.Bets;
-using RatesOfPlayers.Application.Abstractions.DTOs.Common;
-using RatesOfPlayers.Application.Abstractions.Exceptions;
 using RatesOfPlayers.Application.Abstractions.Queries.Bets;
 using RatesOfPlayers.Domain;
 using RatesOfPlayers.Domain.Bets;
-using RatesOfPlayers.Domain.Players;
 
 namespace RatesOfPlayers.Application.Services.QueryHandlers.Bets;
 
@@ -14,8 +11,7 @@ namespace RatesOfPlayers.Application.Services.QueryHandlers.Bets;
 /// Обработчик запроса на получение ставок игрока
 /// </summary>
 /// <param name="uow">Единица работы</param>
-public class GetBetsQueryHandler(
-    IUnitOfWork uow) : IRequestHandler<GetBetsQuery, IReadOnlyList<BetDto>>
+public class GetBetsQueryHandler(IUnitOfWork uow) : IRequestHandler<GetBetsQuery, IReadOnlyList<BetDto>>
 {
     /// <summary>
     /// Метод обработчик запроса на получение ставок игрока
@@ -24,11 +20,8 @@ public class GetBetsQueryHandler(
     /// <param name="cancellationToken">Токен отмены операции</param>
     public async Task<IReadOnlyList<BetDto>> Handle(GetBetsQuery request, CancellationToken cancellationToken)
     {
-        // Фильтрация ставок по игроку
-        var betsQueryable = uow.Query<Bet>().Where(b => b.PlayerId == request.PlayerId);
-        
         // Получение и проекция ставок в DTO
-        return await betsQueryable.Select(b => new BetDto
+        return await uow.Query<Bet>().Select(b => new BetDto
         {
             Id = b.Id,
             PlayerId = b.PlayerId,
