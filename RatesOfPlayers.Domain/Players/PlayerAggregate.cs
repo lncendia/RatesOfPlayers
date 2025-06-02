@@ -1,4 +1,3 @@
-using RatesOfPlayers.Domain.Players.Enum;
 using RatesOfPlayers.Domain.Players.ValueObjects;
 
 namespace RatesOfPlayers.Domain.Players;

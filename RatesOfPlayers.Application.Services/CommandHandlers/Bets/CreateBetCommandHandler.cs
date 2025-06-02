@@ -33,7 +33,7 @@ public class CreateBetCommandHandler(
         
         // Если уже указан выигрыш, тогда пополняем баланс на сумму из запроса
         if (request.Prize is not null) 
-            player.DepositBalance(request.Prize ?? 0);
+            player.DepositBalance(request.Prize.Value);
         
         // Создаём агрегат ставки
         var bet = new BetAggregate

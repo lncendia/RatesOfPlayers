@@ -1,5 +1,4 @@
 using MediatR;
-using RatesOfPlayers.Domain.Transactions.Enum;
 
 namespace RatesOfPlayers.Application.Abstractions.Commands.Transactions;
 

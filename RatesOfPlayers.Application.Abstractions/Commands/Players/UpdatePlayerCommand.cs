@@ -26,4 +26,9 @@ public class UpdatePlayerCommand : IRequest
     /// Отчество.
     /// </summary>
     public string? ThirdName { get; init; }
+    
+    /// <summary>
+    /// Статус игрока.
+    /// </summary>
+    public string? Status { get; init; }
 }

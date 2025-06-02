@@ -4,7 +4,7 @@ using RatesOfPlayers.Application.Abstractions.Exceptions;
 using RatesOfPlayers.Domain;
 using RatesOfPlayers.Domain.Players;
 using RatesOfPlayers.Domain.Transactions;
-using RatesOfPlayers.Domain.Transactions.Enum;
+using RatesOfPlayers.Domain.Transactions.ValueObjects;
 
 namespace RatesOfPlayers.Application.Services.CommandHandlers.Transactions;
 
@@ -34,8 +34,11 @@ public class CreateTransactionCommandHandler(
             player.DepositBalance(request.Amount);
         
         // Если тип транзакции списание, тогда списываем с баланса сумму из запроса
-        if (request.Type == TransactionType.Withdrawal)
+        else if (request.Type == TransactionType.Withdrawal)
             player.WithdrawalBalance(request.Amount);
+        
+        else 
+            throw new UnknownTransactionTypeException(request.Type);
         
         // Создаём агрегат транзакции
         var transaction = new TransactionAggregate

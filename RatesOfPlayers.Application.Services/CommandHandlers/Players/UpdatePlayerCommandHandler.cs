@@ -3,6 +3,7 @@ using RatesOfPlayers.Application.Abstractions.Commands.Players;
 using RatesOfPlayers.Application.Abstractions.Exceptions;
 using RatesOfPlayers.Domain;
 using RatesOfPlayers.Domain.Players;
+using RatesOfPlayers.Domain.Players.ValueObjects;
 
 namespace RatesOfPlayers.Application.Services.CommandHandlers.Players;
 
@@ -39,6 +40,21 @@ public class UpdatePlayerCommandHandler(
         if(request.ThirdName != null)
             player.Name.ThirdName = request.ThirdName;
         
+        var statusDictionary = new []
+        {
+            PlayerStatus.New,
+            PlayerStatus.Bad
+        };
+        
+        // Обновляем отчество игрока, если оно указано в запросе
+        if (request.Status != null)
+        {
+            if (statusDictionary.Contains(request.Status))
+                player.Name.ThirdName = request.ThirdName;
+            else
+                throw new UnknownPlayerStatusException(request.Status);
+        }
+
         // Обновляет информацию об игроке в контексте базы данных
         uow.Update(player);
 

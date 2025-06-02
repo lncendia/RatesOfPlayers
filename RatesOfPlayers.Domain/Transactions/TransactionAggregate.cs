@@ -1,5 +1,3 @@
-using RatesOfPlayers.Domain.Transactions.Enum;
-
 namespace RatesOfPlayers.Domain.Transactions;
 
 /// <summary>
@@ -15,12 +13,12 @@ public class TransactionAggregate
     /// <summary>
     /// Идентификатор транзакции.
     /// </summary>
-    public required Guid PlayerId { get; init; }
+    public required Guid PlayerId { get; set; }
     
     /// <summary>
     /// Идентификатор транзакции.
     /// </summary>
-    public required decimal Amount { get; init; }
+    public required decimal Amount { get; set; }
     
     /// <summary>
     /// Дата транзакции.
@@ -30,5 +28,5 @@ public class TransactionAggregate
     /// <summary>
     /// Тип транзакции.
     /// </summary>
-    public required string Type { get; init; }
+    public required string Type { get; set; }
 }
