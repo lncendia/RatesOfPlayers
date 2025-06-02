@@ -24,41 +24,21 @@ public class UpdateTransactionCommandHandler(
     public async Task Handle(UpdateTransactionCommand request, CancellationToken cancellationToken)
     {
         // Получаем транзакцию по идентификатору из запроса
-        var transaction = await uow.Query<TransactionAggregate>().FirstOrDefaultAsync(p => p.Id == request.TransactionId, cancellationToken);
-        
+        var transaction = await uow.Query<Transaction>()
+            .FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
+
         // Если транзакция не найдена, выбрасываем исключение
         if (transaction is null)
-            throw new TransactionNotFoundException(request.TransactionId);
-        
-        // Устанавливаем сумму транзакции, если она указана в запросе
-        if (request.Amount is not null)
-            transaction.Amount = request.Amount.Value;
+            throw new TransactionNotFoundException(request.Id);
 
-        // Устанавливаем тип транзакции, если он указан в запросе
-        if (request.Type is not null)
-        {
-            // Проверяем, существует ли указанный тип транзакции в словаре TransactionType
-            if (!TransactionType.TryGetValue(request.Type, out var type))
-                throw new UnknownTransactionTypeException(request.Type);
-            
-            // Устанавливаем тип транзакции
-            transaction.Type = type;
-        }
-        
-        // Устанавливаем идентификатор игрока, если он указан в запросе
-        if (request.PlayerId is not null)
-        {
-            // Асинхронно ищем игрока по идентификатору в базе данных
-            var player = await uow.Query<PlayerAggregate>()
-                .FirstOrDefaultAsync(p=>p.Id == request.PlayerId, cancellationToken);
-            
-            // Проверяем, найден ли игрок, и выбрасываем исключение, если нет
-            if (player is null)
-                throw new PlayerNotFoundException(request.PlayerId.Value);
-            
-            // Устанавливаем идентификатор игрока для транзакции
-            transaction.PlayerId = request.PlayerId.Value;
-        }
+        // Устанавливаем сумму транзакции, если она указана в запросе
+        transaction.Amount = request.Amount;
+
+        // Устанавливаем тип транзакции
+        transaction.Type = request.Type;
+
+        // Устанавливаем идентификатор игрока для транзакции
+        transaction.PlayerId = request.PlayerId;
 
         // Сохраняем изменения в базе данных
         await uow.SaveChangesAsync(cancellationToken);

@@ -23,18 +23,18 @@ public class GetPlayerQueryHandler(
     public async Task<PlayerDto> Handle(GetPlayerQuery request, CancellationToken cancellationToken)
     {
         // Получаем игрока по идентификатору из запроса
-        var player = await uow.Query<PlayerAggregate>().FirstOrDefaultAsync(p => p.Id == request.PlayerId, cancellationToken);
+        var player = await uow.Query<Player>().FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
         
         // Если игрок не найден, выбрасываем исключение
         if (player == null)
-            throw new PlayerNotFoundException(request.PlayerId);
+            throw new PlayerNotFoundException(request.Id);
 
         // Возвращаем идентификатор созданного игрока
         return new PlayerDto
         {
             Id = player.Id,
-            Name = player.Name.ShortForm(),
-            Amount = player.Balance.Amount,
+            Name = player.Name,
+            Amount = 0,
             RegistrationDate = player.RegistrationDate,
             Status = player.Status.ToString()
         };

@@ -1,4 +1,5 @@
 using MediatR;
+using RatesOfPlayers.Domain.Transactions.Enums;
 
 namespace RatesOfPlayers.Application.Abstractions.Commands.Transactions;
 
@@ -10,20 +11,20 @@ public class UpdateTransactionCommand : IRequest
     /// <summary>
     /// Уникальный идентификатор транзакции.
     /// </summary>
-    public required Guid TransactionId { get; init; }
+    public required long Id { get; init; }
     
     /// <summary>
     /// Идентификатор игрока.
     /// </summary>
-    public Guid? PlayerId { get; init; }
+    public required long PlayerId { get; init; }
     
     /// <summary>
     /// Сумма транзакции.
     /// </summary>
-    public decimal? Amount { get; init; }
+    public required decimal Amount { get; init; }
     
     /// <summary>
     /// Тип транзакции.
     /// </summary>
-    public string? Type { get; init; }
+    public required TransactionType Type { get; init; }
 }

@@ -1,4 +1,5 @@
 using MediatR;
+using RatesOfPlayers.Domain.Players.Enums;
 
 namespace RatesOfPlayers.Application.Abstractions.Commands.Players;
 
@@ -10,25 +11,15 @@ public class UpdatePlayerCommand : IRequest
     /// <summary>
     /// Уникальный идентификатор игрока.
     /// </summary>
-    public required Guid PlayerId { get; init; }
+    public long PlayerId { get; init; }
     
     /// <summary>
     /// Имя.
     /// </summary>
-    public string? FirstName { get; init; }
-    
-    /// <summary>
-    /// Фамилия.
-    /// </summary>
-    public string? SecondName { get; init; }
-    
-    /// <summary>
-    /// Отчество.
-    /// </summary>
-    public string? ThirdName { get; init; }
+    public required string Name { get; init; }
     
     /// <summary>
     /// Статус игрока.
     /// </summary>
-    public string? Status { get; init; }
+    public required PlayerStatus Status { get; init; }
 }

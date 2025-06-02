@@ -1,16 +1,17 @@
 using MediatR;
+using RatesOfPlayers.Application.Abstractions.DTOs.Bets;
 
 namespace RatesOfPlayers.Application.Abstractions.Commands.Bets;
 
 /// <summary>
 /// Команда для создания игрока.
 /// </summary>
-public class CreateBetCommand : IRequest<Guid>
+public class CreateBetCommand : IRequest<BetDto>
 {
     /// <summary>
     /// Уникальный идентификатор игрока.
     /// </summary>
-    public required Guid PlayerId { get; init; }
+    public required long PlayerId { get; init; }
     
     /// <summary>
     /// Сумма ставки.

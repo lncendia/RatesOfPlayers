@@ -21,7 +21,7 @@ public static class StorageServices
         var database = builder.Configuration.GetRequiredValue<string>("ConnectionStrings:Database");
 
         // Добавляем контекст базы данных todo
-        builder.Services.AddDbContext<ApplicationDbContext>(opt => { opt.UseNpgsql(database); });
+        builder.Services.AddDbContext<ApplicationDbContext>(opt => { opt.UseSqlite(database); });
 
         // Добавляем сервис для работы с единицей работы
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

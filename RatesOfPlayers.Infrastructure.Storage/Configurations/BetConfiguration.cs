@@ -4,13 +4,13 @@ using RatesOfPlayers.Domain.Bets;
 
 namespace RatesOfPlayers.Infrastructure.Storage.Configurations;
 
-public class BetConfiguration : IEntityTypeConfiguration<BetAggregate>
+public class BetConfiguration : IEntityTypeConfiguration<Bet>
 {
     /// <summary>
     /// Настраивает таблицу игроков.
     /// </summary>
     /// <param name="builder">Строитель для настройки таблицы.</param>
-    public void Configure(EntityTypeBuilder<BetAggregate> builder)
+    public void Configure(EntityTypeBuilder<Bet> builder)
     {
         // Указываем имя таблицы в БД для хранения статей
         builder.ToTable("Bets");

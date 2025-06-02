@@ -1,5 +1,4 @@
 using MediatR;
-using RatesOfPlayers.Domain.Players.ValueObjects;
 
 namespace RatesOfPlayers.Application.Abstractions.Commands.Players;
 
@@ -11,5 +10,5 @@ public class CreatePlayerCommand : IRequest<Guid>
     /// <summary>
     /// Полное имя.
     /// </summary>
-    public required FullName FullName { get; init; }
+    public required string Name { get; init; }
 }

@@ -10,7 +10,7 @@ public class CreateTransactionCommand : IRequest<Guid>
     /// <summary>
     /// Уникальный идентификатор игрока.
     /// </summary>
-    public required Guid PlayerId { get; init; }
+    public required long PlayerId { get; init; }
     
     /// <summary>
     /// Сумма транзакции.

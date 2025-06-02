@@ -11,5 +11,5 @@ public class GetPlayerQuery : IRequest<PlayerDto>
     /// <summary>
     /// Уникальный идентификатор пользователя.
     /// </summary>
-    public required Guid PlayerId { get; init; }
+    public required long Id { get; init; }
 }

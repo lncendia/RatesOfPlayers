@@ -10,5 +10,5 @@ public class DeleteBetCommand : IRequest
     /// <summary>
     /// Уникальный идентификатор ставки.
     /// </summary>
-    public required Guid BetId { get; init; }
+    public required long Id { get; init; }
 }

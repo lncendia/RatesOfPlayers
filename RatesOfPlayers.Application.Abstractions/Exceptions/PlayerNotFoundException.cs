@@ -8,13 +8,13 @@ public class PlayerNotFoundException : Exception
     /// <summary>
     /// Идентификатор игрока, который не был найден.
     /// </summary>
-    public Guid PlayerId { get; }
+    public long PlayerId { get; }
 
     /// <summary>
     /// Конструктор исключения.
     /// </summary>
     /// <param name="playerId">Идентификатор игрока.</param>
-    public PlayerNotFoundException(Guid playerId) : base($"Player with ID {playerId} not found.")
+    public PlayerNotFoundException(long playerId) : base($"Player with ID {playerId} not found.")
     {
         PlayerId = playerId;
     }

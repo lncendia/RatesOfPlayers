@@ -7,13 +7,13 @@ namespace RatesOfPlayers.Infrastructure.Storage.Configurations;
 /// <summary>
 /// Конфигурация Fluent API для сущности PlayerAggregate.
 /// </summary>
-public class PlayerConfiguration : IEntityTypeConfiguration<PlayerAggregate>
+public class PlayerConfiguration : IEntityTypeConfiguration<Player>
 {
     /// <summary>
     /// Настраивает таблицу игроков.
     /// </summary>
     /// <param name="builder">Строитель для настройки таблицы.</param>
-    public void Configure(EntityTypeBuilder<PlayerAggregate> builder)
+    public void Configure(EntityTypeBuilder<Player> builder)
     {
         // Указываем имя таблицы в БД для хранения статей
         builder.ToTable("Players");

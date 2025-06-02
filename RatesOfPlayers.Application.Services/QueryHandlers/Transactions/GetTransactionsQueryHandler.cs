@@ -25,7 +25,7 @@ public class GetTransactionsQueryHandler(
     public async Task<CountResult<TransactionDto>> Handle(GetTransactionsQuery request, CancellationToken cancellationToken)
     {
         // Получаем игрока по идентификатору из запроса
-        var player = await uow.Query<PlayerAggregate>()
+        var player = await uow.Query<Player>()
             .FirstOrDefaultAsync(p => p.Id == request.PlayerId, cancellationToken);
         
         // Если игрок не найден, выбрасываем исключение
@@ -33,7 +33,7 @@ public class GetTransactionsQueryHandler(
             throw new PlayerNotFoundException(request.PlayerId);
         
         // Фильтрация транзакций по игроку
-        var betsQueryable = uow.Query<TransactionAggregate>().Where(b => b.PlayerId == request.PlayerId);
+        var betsQueryable = uow.Query<Transaction>().Where(b => b.PlayerId == request.PlayerId);
 
         // Подсчёт общего количества транзакций
         var count = await betsQueryable.CountAsync(cancellationToken);

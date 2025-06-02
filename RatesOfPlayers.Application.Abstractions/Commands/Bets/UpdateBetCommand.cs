@@ -10,17 +10,17 @@ public class UpdateBetCommand : IRequest
     /// <summary>
     /// Уникальный идентификатор ставки.
     /// </summary>
-    public required Guid BetId { get; init; }
+    public required long Id { get; init; }
     
     /// <summary>
     /// Идентификатор игрока.
     /// </summary>
-    public Guid? PlayerId { get; init; }
+    public required long PlayerId { get; init; }
     
     /// <summary>
     /// Сумма ставки.
     /// </summary>
-    public decimal? Amount { get; init; }
+    public required decimal Amount { get; init; }
     
     /// <summary>
     /// Сумма выигрыша.

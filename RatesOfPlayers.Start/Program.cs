@@ -1,13 +1,30 @@
-using RatesOfPlayers.Start.Extensions;
-
-// Создаем объект-строитель приложения ASP.NET Core
 var builder = WebApplication.CreateBuilder(args);
 
-// Добавляем в приложение сервисы для работы с хранилищами
-builder.AddStorageServices();
+// Add services to the container.
+builder.Services.AddControllersWithViews();
 
-// Создаем экземпляр приложения ASP.NET Core
 var app = builder.Build();
 
-// Запускаем приложение ASP.NET Core
-await app.RunAsync();
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.MapStaticAssets();
+
+app.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}")
+    .WithStaticAssets();
+
+
+app.Run();

@@ -3,7 +3,6 @@ using RatesOfPlayers.Application.Abstractions.Commands.Players;
 using RatesOfPlayers.Application.Abstractions.Exceptions;
 using RatesOfPlayers.Domain;
 using RatesOfPlayers.Domain.Players;
-using RatesOfPlayers.Domain.Players.ValueObjects;
 
 namespace RatesOfPlayers.Application.Services.CommandHandlers.Players;
 
@@ -22,36 +21,13 @@ public class UpdatePlayerCommandHandler(
     public async Task Handle(UpdatePlayerCommand request, CancellationToken cancellationToken)
     {
         // Получаем игрока по идентификатору из запроса
-        var player = uow.Query<PlayerAggregate>().FirstOrDefault(p => p.Id == request.PlayerId);
+        var player = uow.Query<Player>().FirstOrDefault(p => p.Id == request.PlayerId);
         
         // Если игрок не найден, выбрасываем исключение
-        if (player == null)
-            throw new PlayerNotFoundException(request.PlayerId);
+        if (player == null) throw new PlayerNotFoundException(request.PlayerId);
         
-        // Обновляем имя игрока, если оно указано в запросе
-        if(request.FirstName != null)
-            player.Name.FirstName = request.FirstName;
         
-        // Обновляем фамилию игрока, если оно указано в запросе
-        if(request.SecondName != null)
-            player.Name.SecondName = request.SecondName;
         
-        // Обновляем отчество игрока, если оно указано в запросе
-        if(request.ThirdName != null)
-            player.Name.ThirdName = request.ThirdName;
-        
-        // Обновляем отчество игрока, если оно указано в запросе
-        if (request.Status != null)
-        {
-            // Проверяем, существует ли указанный статус в словаре PlayerStatus
-            if (!PlayerStatus.TryGetValue(request.Status, out var status))
-                throw new UnknownPlayerStatusException(request.Status);
-            
-            // Устанавливаем новый статус для игрока
-            player.SetStatus(status);
-            
-        }
-
         // Обновляет информацию об игроке в контексте базы данных
         uow.Update(player);
 

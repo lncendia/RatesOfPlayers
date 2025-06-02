@@ -8,12 +8,12 @@ public class BetDto
     /// <summary>
     /// Идентификатор ставки.
     /// </summary>
-    public required Guid Id { get; init; }
+    public required long Id { get; init; }
     
     /// <summary>
     /// Идентификатор игрока.
     /// </summary>
-    public required Guid PlayerId { get; init; }
+    public required long PlayerId { get; init; }
     
     /// <summary>
     /// Сумма ставки.

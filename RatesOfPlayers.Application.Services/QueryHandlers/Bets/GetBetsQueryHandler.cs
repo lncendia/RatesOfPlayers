@@ -15,35 +15,20 @@ namespace RatesOfPlayers.Application.Services.QueryHandlers.Bets;
 /// </summary>
 /// <param name="uow">Единица работы</param>
 public class GetBetsQueryHandler(
-    IUnitOfWork uow) : IRequestHandler<GetBetsQuery, CountResult<BetDto>>
+    IUnitOfWork uow) : IRequestHandler<GetBetsQuery, IReadOnlyList<BetDto>>
 {
     /// <summary>
     /// Метод обработчик запроса на получение ставок игрока
     /// </summary>
     /// <param name="request">Запрос на получение ставок игрока</param>
     /// <param name="cancellationToken">Токен отмены операции</param>
-    public async Task<CountResult<BetDto>> Handle(GetBetsQuery request, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<BetDto>> Handle(GetBetsQuery request, CancellationToken cancellationToken)
     {
-        // Получаем игрока по идентификатору из запроса
-        var player = await uow.Query<PlayerAggregate>()
-            .FirstOrDefaultAsync(p => p.Id == request.PlayerId, cancellationToken);
-        
-        // Если игрок не найден, выбрасываем исключение
-        if (player == null)
-            throw new PlayerNotFoundException(request.PlayerId);
-        
         // Фильтрация ставок по игроку
-        var betsQueryable = uow.Query<BetAggregate>().Where(b => b.PlayerId == request.PlayerId);
+        var betsQueryable = uow.Query<Bet>().Where(b => b.PlayerId == request.PlayerId);
         
-        // Подсчёт общего количества ставок
-        var count = await betsQueryable.CountAsync(cancellationToken);
-        
-        // Если ставок нет — вернуть пустой результат
-        if (count == 0)
-            return CountResult<BetDto>.NoValues();
-
         // Получение и проекция ставок в DTO
-        var bets = await betsQueryable.Select(b => new BetDto
+        return await betsQueryable.Select(b => new BetDto
         {
             Id = b.Id,
             PlayerId = b.PlayerId,
@@ -52,12 +37,5 @@ public class GetBetsQueryHandler(
             Prize = b.Prize,
             SettlementDate = b.SettlementDate
         }).ToArrayAsync(cancellationToken);
-
-        // Возврат списка и общего количества
-        return new CountResult<BetDto>
-        {
-            List = bets,
-            TotalCount = count
-        };
     }
 }

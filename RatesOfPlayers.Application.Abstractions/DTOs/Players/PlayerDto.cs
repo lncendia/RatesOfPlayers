@@ -8,7 +8,7 @@ public class PlayerDto
     /// <summary>
     /// Идентификатор игрока.
     /// </summary>
-    public required Guid Id { get; init; }
+    public required long Id { get; init; }
 
     /// <summary>
     /// Имя игрока.

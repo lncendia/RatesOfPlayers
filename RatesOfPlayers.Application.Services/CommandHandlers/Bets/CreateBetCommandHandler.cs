@@ -11,8 +11,7 @@ namespace RatesOfPlayers.Application.Services.CommandHandlers.Bets;
 /// Обработчик команды для создания ставки
 /// </summary>
 /// <param name="uow">Единица работы</param>
-public class CreateBetCommandHandler(
-    IUnitOfWork uow) : IRequestHandler<CreateBetCommand, Guid>
+public class CreateBetCommandHandler(IUnitOfWork uow) : IRequestHandler<CreateBetCommand, Guid>
 {
     /// <summary>
     /// Метод обработчик команды для создания ставки
@@ -21,22 +20,8 @@ public class CreateBetCommandHandler(
     /// <param name="cancellationToken">Токен отмены операции</param>
     public async Task<Guid> Handle(CreateBetCommand request, CancellationToken cancellationToken)
     {
-        // Получаем игрока по идентификатору из запроса
-        var player = uow.Query<PlayerAggregate>().FirstOrDefault(p => p.Id == request.PlayerId);
-        
-        // Если игрок не найден, выбрасываем исключение
-        if (player == null)
-            throw new PlayerNotFoundException(request.PlayerId);
-        
-        // Проводим списание с баланса размер ставки
-        player.WithdrawalBalance(request.Amount);
-        
-        // Если уже указан выигрыш, тогда пополняем баланс на сумму из запроса
-        if (request.Prize is not null) 
-            player.DepositBalance(request.Prize.Value);
-        
         // Создаём агрегат ставки
-        var bet = new BetAggregate
+        var bet = new Bet
         {
             PlayerId = request.PlayerId,
             Amount = request.Amount,
@@ -44,9 +29,6 @@ public class CreateBetCommandHandler(
             Prize = request.Prize,
             SettlementDate = request.SettlementDate,
         };
-        
-        // Обновляет информацию об игроке в контексте базы данных
-        uow.Update(player);
 
         // Добавляем транзакцию в базу данных
         await uow.AddAsync(bet, cancellationToken);

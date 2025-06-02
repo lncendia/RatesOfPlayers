@@ -1,5 +1,6 @@
 using MediatR;
 using RatesOfPlayers.Application.Abstractions.Commands.Players;
+using RatesOfPlayers.Application.Abstractions.DTOs.Players;
 using RatesOfPlayers.Domain;
 using RatesOfPlayers.Domain.Players;
 
@@ -9,8 +10,7 @@ namespace RatesOfPlayers.Application.Services.CommandHandlers.Players;
 /// Обработчик команды для создания игрока
 /// </summary>
 /// <param name="uow">Единица работы</param>
-public class CreatePlayerCommandHandler(
-    IUnitOfWork uow) : IRequestHandler<CreatePlayerCommand, Guid>
+public class CreatePlayerCommandHandler(IUnitOfWork uow) : IRequestHandler<CreatePlayerCommand, PlayerDto>
 {
     /// <summary>
     /// Метод обработчик команды для создания игрока
@@ -20,9 +20,9 @@ public class CreatePlayerCommandHandler(
     public async Task<Guid> Handle(CreatePlayerCommand request, CancellationToken cancellationToken)
     {
         // Создаём агрегат игрока
-        var player = new PlayerAggregate
+        var player = new Player
         {
-            Name = request.FullName,
+            Name = request.Name,
         };
         
         // Добавляем агрегат игрока в контекст базы данных

@@ -11,8 +11,7 @@ namespace RatesOfPlayers.Application.Services.CommandHandlers.Bets;
 /// Обработчик команды для удаления ставки
 /// </summary>
 /// <param name="uow">Единица работы</param>
-public class DeleteBetCommandHandler(
-    IUnitOfWork uow) : IRequestHandler<DeleteBetCommand>
+public class DeleteBetCommandHandler(IUnitOfWork uow) : IRequestHandler<DeleteBetCommand>
 {
     /// <summary>
     /// Метод обработчик команды для удаления ставки
@@ -22,11 +21,11 @@ public class DeleteBetCommandHandler(
     public async Task Handle(DeleteBetCommand request, CancellationToken cancellationToken)
     {
         // Получаем ставку по идентификатору из запроса
-        var bet = await uow.Query<BetAggregate>().FirstOrDefaultAsync(p => p.Id == request.BetId, cancellationToken);
+        var bet = await uow.Query<Bet>().FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
         
         // Если ставка не найдена, выбрасываем исключение
         if (bet == null)
-            throw new BetNotFoundException(request.BetId);
+            throw new BetNotFoundException(request.Id);
         
         // Удаляем ставку из контекста базы данных
         await uow.DeleteAsync(bet, cancellationToken);

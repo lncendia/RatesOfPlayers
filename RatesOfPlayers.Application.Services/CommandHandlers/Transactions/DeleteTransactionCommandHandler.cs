@@ -22,7 +22,7 @@ public class DeleteTransactionCommandHandler(
     public async Task Handle(DeleteTransactionCommand request, CancellationToken cancellationToken)
     {
         // Получаем транзакцию по идентификатору из запроса
-        var transaction = await uow.Query<TransactionAggregate>().FirstOrDefaultAsync(p => p.Id == request.TransactionId, cancellationToken);
+        var transaction = await uow.Query<Transaction>().FirstOrDefaultAsync(p => p.Id == request.TransactionId, cancellationToken);
         
         // Если транзакция не найдена, выбрасываем исключение
         if (transaction == null)
