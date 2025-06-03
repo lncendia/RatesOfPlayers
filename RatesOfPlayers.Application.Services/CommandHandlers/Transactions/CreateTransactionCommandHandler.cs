@@ -14,14 +14,14 @@ namespace RatesOfPlayers.Application.Services.CommandHandlers.Transactions;
 /// <param name="uow">Единица работы</param>
 /// <param name="mapper">Маппер данных</param>
 public class CreateTransactionCommandHandler(IUnitOfWork uow, IMapper mapper)
-    : IRequestHandler<CreateTransactionCommand, TransactionDto>
+    : IRequestHandler<CreateTransactionCommand, long>
 {
     /// <summary>
     /// Метод обработчик команды для создания транзакции
     /// </summary>
     /// <param name="request">Команда для создания транзакции</param>
     /// <param name="cancellationToken">Токен отмены операции</param>
-    public async Task<TransactionDto> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
+    public async Task<long> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
     {
         // Создаём Модель транзакции
         var transaction = new Transaction
@@ -39,6 +39,6 @@ public class CreateTransactionCommandHandler(IUnitOfWork uow, IMapper mapper)
         await uow.SaveChangesAsync(cancellationToken);
 
         // Возвращаем уникальный идентификатор транзакции
-        return mapper.Map<TransactionDto>(transaction);
+        return transaction.Id;
     }
 }

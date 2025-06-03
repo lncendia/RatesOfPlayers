@@ -7,7 +7,7 @@ namespace RatesOfPlayers.Application.Abstractions.Commands.Transactions;
 /// <summary>
 /// Команда для создания игрока.
 /// </summary>
-public class CreateTransactionCommand : IRequest<TransactionDto>
+public class CreateTransactionCommand : IRequest<long>
 {
     /// <summary>
     /// Уникальный идентификатор игрока.
