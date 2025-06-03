@@ -1,4 +1,5 @@
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RatesOfPlayers.Application.Abstractions.DTOs.Transactions;
@@ -26,7 +27,7 @@ public class GetTransactionsQueryHandler(
     {
         // Получение и проекций транзакций в DTO
         return await uow.Query<Transaction>()
-            .Select(b => mapper.Map<TransactionDto>(b))
+            .ProjectTo<TransactionDto>(mapper.ConfigurationProvider)
             .ToArrayAsync(cancellationToken);
     }
 }

@@ -1,4 +1,5 @@
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RatesOfPlayers.Application.Abstractions.DTOs.Bets;
@@ -26,13 +27,12 @@ public class GetBetQueryHandler(
     public async Task<BetDto> Handle(GetBetQuery request, CancellationToken cancellationToken)
     {
         // Получаем ставку по идентификатору из запроса
-        var bet = await uow.Query<Bet>().FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
+        var bet = await uow
+            .Query<Bet>()
+            .ProjectTo<BetDto>(mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
         
-        // Если ставка не найдена, выбрасываем исключение
-        if (bet == null)
-            throw new BetNotFoundException(request.Id);
-
-        // Возвращаем проекцию ставки в DTO
-        return mapper.Map<BetDto>(bet); 
+        // Возвращаем проекцию ставки или выбрасываем исключение
+        return bet ?? throw new BetNotFoundException(request.Id); 
     }
 }

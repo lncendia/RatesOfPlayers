@@ -30,7 +30,7 @@ public class GetPlayerQueryHandler(IUnitOfWork uow, IMapper mapper) : IRequestHa
             .ProjectTo<PlayerDto>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
         
-        // Возвращаем проекцию игрока в DTO
+        // Возвращаем проекцию игрока или выбрасываем исключение
         return player ?? throw new PlayerNotFoundException(request.Id); 
     }
 }

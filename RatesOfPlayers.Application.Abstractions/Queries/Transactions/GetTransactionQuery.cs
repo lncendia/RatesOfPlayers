@@ -4,7 +4,7 @@ using RatesOfPlayers.Application.Abstractions.DTOs.Transactions;
 namespace RatesOfPlayers.Application.Abstractions.Queries.Transactions;
 
 /// <summary>
-/// Запрос на получение игрока.
+/// Запрос на получение транзакции.
 /// </summary>
 public class GetTransactionQuery : IRequest<TransactionDto>
 {

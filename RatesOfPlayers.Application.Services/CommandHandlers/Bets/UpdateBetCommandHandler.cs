@@ -8,7 +8,7 @@ using RatesOfPlayers.Domain.Bets;
 namespace RatesOfPlayers.Application.Services.CommandHandlers.Bets;
 
 /// <summary>
-/// Обработчик команды для изменения данных игрока
+/// Обработчик команды для изменения данных ставки
 /// </summary>
 /// <param name="uow">Единица работы</param>
 public class UpdateBetCommandHandler(IUnitOfWork uow) : IRequestHandler<UpdateBetCommand>

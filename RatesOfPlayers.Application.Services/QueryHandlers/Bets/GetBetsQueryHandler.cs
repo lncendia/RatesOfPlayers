@@ -1,4 +1,5 @@
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RatesOfPlayers.Application.Abstractions.DTOs.Bets;
@@ -23,6 +24,8 @@ public class GetBetsQueryHandler(IUnitOfWork uow, IMapper mapper) : IRequestHand
     public async Task<IReadOnlyList<BetDto>> Handle(GetBetsQuery request, CancellationToken cancellationToken)
     {
         // Получение и проекция ставок в DTO
-        return await uow.Query<Bet>().Select(b => mapper.Map<BetDto>(b)).ToArrayAsync(cancellationToken);
+        return await uow.Query<Bet>()
+            .ProjectTo<BetDto>(mapper.ConfigurationProvider)
+            .ToArrayAsync(cancellationToken);
     }
 }

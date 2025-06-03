@@ -1,4 +1,5 @@
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RatesOfPlayers.Application.Abstractions.DTOs.Transactions;
@@ -26,13 +27,12 @@ public class GetTransactionQueryHandler(
     public async Task<TransactionDto> Handle(GetTransactionQuery request, CancellationToken cancellationToken)
     {
         // Получаем транзакцию по идентификатору из запроса
-        var transaction = await uow.Query<Transaction>().FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
+        var transaction = await uow
+            .Query<Transaction>()
+            .ProjectTo<TransactionDto>(mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
         
-        // Если транзакция не найдена, выбрасываем исключение
-        if (transaction == null)
-            throw new TransactionNotFoundException(request.Id);
-
-        // Возвращаем проекцию транзакции в DTO
-        return mapper.Map<TransactionDto>(transaction); 
+        // Возвращаем проекцию транзакции или выбрасываем исключение
+        return transaction ?? throw new TransactionNotFoundException(request.Id); 
     }
 }
