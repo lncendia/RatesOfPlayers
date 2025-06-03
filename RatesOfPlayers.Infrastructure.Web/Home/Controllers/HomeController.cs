@@ -60,7 +60,6 @@ public class HomeController : Controller
                 case PlayerNotFoundException x:
                     resource = $"Игрок с идентификатором {x.PlayerId} не найден."; 
                     break;
-                
                 case BetNotFoundException x: 
                     resource = $"Ставка c идентификатором {x.BetId} не найдена."; 
                     break;
