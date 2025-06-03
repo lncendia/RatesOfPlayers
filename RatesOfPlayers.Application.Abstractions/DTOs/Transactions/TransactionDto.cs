@@ -1,3 +1,5 @@
+using RatesOfPlayers.Domain.Transactions.Enums;
+
 namespace RatesOfPlayers.Application.Abstractions.DTOs.Transactions;
 
 /// <summary>
@@ -28,5 +30,5 @@ public class TransactionDto
     /// <summary>
     /// Тип транзакции.
     /// </summary>
-    public required string Type { get; init; }
+    public required TransactionType Type { get; init; }
 }
