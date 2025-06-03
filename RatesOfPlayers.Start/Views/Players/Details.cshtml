@@ -1,13 +1,13 @@
 @model RatesOfPlayers.Infrastructure.Web.Players.ViewModels.PlayerViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Подробно";
 }
 
-<h1>Details</h1>
+<h1>Подробно</h1>
 
 <div>
-    <h4>PlayerViewModel</h4>
+    <h4>Игрок</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -43,6 +43,6 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new {  id = Model.Id }) |
-    <a asp-action="Index">Back to List</a>
+    @Html.ActionLink("Редактировать", "Edit", new {  id = Model.Id }) |
+    <a asp-action="Index">К списку</a>
 </div>

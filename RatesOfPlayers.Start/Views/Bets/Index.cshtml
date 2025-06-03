@@ -1,13 +1,13 @@
 @model IEnumerable<RatesOfPlayers.Infrastructure.Web.Bets.ViewModels.BetViewModel>
 
 @{
-    ViewData["Title"] = "Список транзакций";
+    ViewData["Title"] = "Список ставок";
 }
 
 <h1>Список ставок</h1>
 
 <p>
-    <a asp-action="Create">Создать новую</a>
+    <a asp-action="Create">Добавить ставку</a>
 </p>
 <table class="table">
     <thead>
@@ -49,9 +49,9 @@
                 @Html.DisplayFor(modelItem => item.SettlementDate)
             </th>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Редактировать", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Подробно", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Удалить", "Delete", new { /* id=item.PrimaryKey */ })
             </td>
         </tr>
 }
