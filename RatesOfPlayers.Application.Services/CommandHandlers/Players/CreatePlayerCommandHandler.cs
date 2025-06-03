@@ -1,4 +1,3 @@
-using AutoMapper;
 using MediatR;
 using RatesOfPlayers.Application.Abstractions.Commands.Players;
 using RatesOfPlayers.Domain;
@@ -10,8 +9,7 @@ namespace RatesOfPlayers.Application.Services.CommandHandlers.Players;
 /// Обработчик команды для создания игрока
 /// </summary>
 /// <param name="uow">Единица работы</param>
-/// <param name="mapper">Маппер данных</param>
-public class CreatePlayerCommandHandler(IUnitOfWork uow, IMapper mapper) : IRequestHandler<CreatePlayerCommand, long>
+public class CreatePlayerCommandHandler(IUnitOfWork uow) : IRequestHandler<CreatePlayerCommand, long>
 {
     /// <summary>
     /// Метод обработчик команды для создания игрока

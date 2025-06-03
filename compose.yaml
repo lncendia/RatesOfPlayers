@@ -4,3 +4,5 @@
     build:
       context: .
       dockerfile: RatesOfPlayers.Start/Dockerfile
+    ports:
+      - "5090:8080"
