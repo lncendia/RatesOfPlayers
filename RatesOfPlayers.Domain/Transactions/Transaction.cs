@@ -5,7 +5,7 @@ namespace RatesOfPlayers.Domain.Transactions;
 /// <summary>
 /// Модель транзакции.
 /// </summary>
-public class Transaction
+public class Transaction : IVersionedEntity
 {
     /// <summary>
     /// Идентификатор транзакции.
@@ -31,4 +31,9 @@ public class Transaction
     /// Тип транзакции.
     /// </summary>
     public required TransactionType Type { get; set; }
+
+    /// <summary>
+    /// Поле для оптимистичной блокировки
+    /// </summary>
+    public int Version { get; set; }
 }

@@ -5,7 +5,7 @@ namespace RatesOfPlayers.Domain.Players;
 /// <summary>
 /// Модель игрока.
 /// </summary>
-public class Player
+public class Player : IVersionedEntity
 {
     /// <summary>
     /// Идентификатор игрока.
@@ -26,4 +26,9 @@ public class Player
     /// Статус игрока.
     /// </summary>
     public PlayerStatus Status { get; set; } = PlayerStatus.New;
+    
+    /// <summary>
+    /// Поле для оптимистичной блокировки
+    /// </summary>
+    public int Version { get; set; }
 }

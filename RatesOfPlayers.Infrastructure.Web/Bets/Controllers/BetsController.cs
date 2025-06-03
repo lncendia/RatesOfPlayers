@@ -2,6 +2,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using RatesOfPlayers.Application.Abstractions.Commands.Bets;
+using RatesOfPlayers.Application.Abstractions.Exceptions;
 using RatesOfPlayers.Application.Abstractions.Queries.Bets;
 using RatesOfPlayers.Infrastructure.Web.Bets.ViewModels;
 
@@ -22,13 +23,13 @@ public class BetsController(ISender mediator, IMapper mapper) : Controller
     {
         // Создание запроса на получение списка ставок
         var query = new GetBetsQuery();
-        
+
         // Отправка запроса через медиатор
         var bets = await mediator.Send(query);
 
         // Преобразование данных в ViewModel
         var viewModel = mapper.Map<IEnumerable<BetViewModel>>(bets);
-        
+
         // Возврат представления с данными
         return View(viewModel);
     }
@@ -42,13 +43,13 @@ public class BetsController(ISender mediator, IMapper mapper) : Controller
     {
         // Создание запроса с указанным ID ставки
         var query = new GetBetQuery { Id = id };
-        
+
         // Отправка запроса через медиатор
         var bet = await mediator.Send(query);
-        
+
         // Преобразование данных в ViewModel
-        var viewModel  = mapper.Map<BetViewModel>(bet);
-        
+        var viewModel = mapper.Map<BetViewModel>(bet);
+
         // Возврат представления с данными
         return View(viewModel);
     }
@@ -74,14 +75,32 @@ public class BetsController(ISender mediator, IMapper mapper) : Controller
         // Проверка валидности модели
         if (!ModelState.IsValid) return View(model);
 
+        // Проверка дат
+        if (model.Date >= model.SettlementDate)
+        {
+            ModelState.AddModelError("SettlementDate", "Дата расчета не может быть раньше даты ставки");
+            return View(model);
+        }
+
         // Преобразование ViewModel в команду
         var command = mapper.Map<CreateBetCommand>(model);
 
-        // Отправка команды через медиатор и получение ID нового ставки
-        var id = await mediator.Send(command);
-        
-        // Перенаправление на страницу деталей
-        return RedirectToAction(nameof(Details), new { id });
+        try
+        {
+            // Отправка команды через медиатор и получение ID нового ставки
+            var id = await mediator.Send(command);
+
+            // Перенаправление на страницу деталей
+            return RedirectToAction(nameof(Details), new { id });
+        }
+        catch (PlayerNotFoundException)
+        {
+            // Добавляем ошибку в модель
+            ModelState.AddModelError("PlayerId", "Игрок не найден");
+
+            // Возвращаем представление
+            return View(model);
+        }
     }
 
     /// <summary>
@@ -93,13 +112,13 @@ public class BetsController(ISender mediator, IMapper mapper) : Controller
     {
         // Создание запроса с указанным ID
         var query = new GetBetQuery { Id = id };
-        
+
         // Отправка запроса через медиатор
         var bet = await mediator.Send(query);
-        
+
         // Преобразование данных в ViewModel для редактирования
         var viewModel = mapper.Map<EditBetViewModel>(bet);
-        
+
         return View(viewModel);
     }
 
@@ -116,16 +135,34 @@ public class BetsController(ISender mediator, IMapper mapper) : Controller
         // Проверка валидности модели
         if (!ModelState.IsValid) return View(model);
         
+        // Проверка дат
+        if (model.Date >= model.SettlementDate)
+        {
+            ModelState.AddModelError("SettlementDate", "Дата расчета не может быть раньше даты ставки");
+            return View(model);
+        }
+
         // Преобразование ViewModel в команду с добавлением ID
         var command = mapper.Map<UpdateBetCommand>(model, opt => opt.Items.Add("id", id));
-        
-        // Отправка команды через медиатор
-        await mediator.Send(command);
-        
-        // Перенаправление на страницу деталей
-        return RedirectToAction(nameof(Details), new { id });
+
+        try
+        {
+            // Отправка команды через медиатор
+            await mediator.Send(command);
+
+            // Перенаправление на страницу деталей
+            return RedirectToAction(nameof(Details), new { id });
+        }
+        catch (PlayerNotFoundException)
+        {
+            // Добавляем ошибку в модель
+            ModelState.AddModelError("PlayerId", "Игрок не найден");
+
+            // Возвращаем представление
+            return View(model);
+        }
     }
-    
+
     /// <summary>
     /// Отображает форму подтверждения удаления
     /// </summary>
@@ -135,13 +172,13 @@ public class BetsController(ISender mediator, IMapper mapper) : Controller
     {
         // Создание запроса с указанным ID
         var query = new GetBetQuery { Id = id };
-        
+
         // Отправка запроса через медиатор
         var bet = await mediator.Send(query);
-        
+
         // Преобразование данных в ViewModel
         var viewModel = mapper.Map<BetViewModel>(bet);
-        
+
         // Возврат представления с данными
         return View(viewModel);
     }
@@ -158,10 +195,10 @@ public class BetsController(ISender mediator, IMapper mapper) : Controller
     {
         // Создание команды на удаление
         var command = new DeleteBetCommand { Id = id };
-        
+
         // Отправка команды через медиатор
         await mediator.Send(command);
-          
+
         // Перенаправление на список ставок
         return RedirectToAction(nameof(Index));
     }

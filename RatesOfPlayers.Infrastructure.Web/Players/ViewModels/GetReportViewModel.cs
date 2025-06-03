@@ -23,4 +23,9 @@ public class GetReportViewModel
     [Display(Name = "Статус")]
     [EnumDataType(typeof(PlayerStatusForView), ErrorMessage = "Некорректный тип статуса")]
     public PlayerStatusForView? Status { get; init; }
+
+    /// <summary>
+    /// Игроки
+    /// </summary>
+    public PlayerReportViewModel[] Players { get; set; } = [];
 }

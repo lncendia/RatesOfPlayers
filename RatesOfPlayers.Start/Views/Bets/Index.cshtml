@@ -1,37 +1,38 @@
 @model IEnumerable<RatesOfPlayers.Infrastructure.Web.Bets.ViewModels.BetViewModel>
 
 @{
-    ViewData["Title"] = "Список ставок";
+    ViewData["Title"] = "Ставки";
 }
 
-<h1>Список ставок</h1>
+<h1>Ставки</h1>
 
 <p>
     <a asp-action="Create">Добавить ставку</a>
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.PlayerId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Amount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Prize)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SettlementDate)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PlayerId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Prize)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SettlementDate)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.PlayerId)
@@ -42,18 +43,18 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Date)
             </td>
-            <th>
-                @Html.DisplayFor(modelItem => item.Prize)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.SettlementDate)
-            </th>
             <td>
-                @Html.ActionLink("Редактировать", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Подробно", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Удалить", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.DisplayFor(modelItem => item.Prize)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SettlementDate)
+            </td>
+            <td>
+                @Html.ActionLink("Редактировать", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Подробно", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

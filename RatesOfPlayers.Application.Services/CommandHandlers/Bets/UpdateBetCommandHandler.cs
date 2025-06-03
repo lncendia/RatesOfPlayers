@@ -4,6 +4,7 @@ using RatesOfPlayers.Application.Abstractions.Commands.Bets;
 using RatesOfPlayers.Application.Abstractions.Exceptions;
 using RatesOfPlayers.Domain;
 using RatesOfPlayers.Domain.Bets;
+using RatesOfPlayers.Domain.Players;
 
 namespace RatesOfPlayers.Application.Services.CommandHandlers.Bets;
 
@@ -27,6 +28,13 @@ public class UpdateBetCommandHandler(IUnitOfWork uow) : IRequestHandler<UpdateBe
         if (bet == null)
             throw new BetNotFoundException(request.Id);
 
+        // Проверяем существование игрока
+        var playerExists = request.PlayerId == bet.PlayerId || await uow.Query<Player>()
+            .AnyAsync(p => p.Id == request.PlayerId, cancellationToken);
+        
+        if (!playerExists)
+            throw new PlayerNotFoundException(request.PlayerId);
+        
         // Устанавливаем сумму ставки
         bet.Amount = request.Amount;
 

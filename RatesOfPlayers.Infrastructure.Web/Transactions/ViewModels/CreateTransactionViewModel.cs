@@ -25,6 +25,7 @@ public class CreateTransactionViewModel
     [Display(Name = "Сумма транзакции")]
     [Required(ErrorMessage = "Сумма транзакции обязательна для заполнения")]
     [DataType(DataType.Currency, ErrorMessage = "Некорректный формат суммы")]
+    [Range(0.01, double.MaxValue, ErrorMessage = "Сумма должна быть положительной")]
     public required decimal Amount { get; init; }
     
     /// <summary>
@@ -44,6 +45,5 @@ public class CreateTransactionViewModel
     [Display(Name = "Дата транзакции")]
     [Required(ErrorMessage = "Дата транзакции обязательна для заполнения")]
     [DataType(DataType.DateTime, ErrorMessage = "Некорректный формат даты")]
-    [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}", ApplyFormatInEditMode = true)]
     public required DateTime Date { get; init; }
 }

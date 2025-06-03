@@ -39,6 +39,6 @@ public class TransactionViewModel
     /// </summary>
     [Display(Name = "Дата транзакции")]
     [DataType(DataType.DateTime)]
-    [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}", ApplyFormatInEditMode = true)]
+    [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}")]
     public required DateTime Date { get; init; }
 }

@@ -12,6 +12,7 @@ public class ApplicationMapperProfile : AutoMapper.Profile
     public ApplicationMapperProfile()
     {
         CreateMap<PlayerWithBalance, PlayerReportDto>();
+        CreateMap<PlayerWithBalance, PlayerDto>();
         CreateMap<Player, PlayerDto>();
         CreateMap<Bet, BetDto>();
         CreateMap<Transaction, TransactionDto>();

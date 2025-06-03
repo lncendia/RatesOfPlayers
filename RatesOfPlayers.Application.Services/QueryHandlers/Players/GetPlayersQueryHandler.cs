@@ -23,7 +23,7 @@ public class GetPlayersQueryHandler(IUnitOfWork uow, IMapper mapper) : IRequestH
     public async Task<IReadOnlyList<PlayerDto>> Handle(GetPlayersQuery request, CancellationToken cancellationToken)
     {
         // Получение и проекция игроков в DTO
-        return await uow.Query<Player>()
+        return await uow.Query<PlayerWithBalance>()
             .ProjectTo<PlayerDto>(mapper.ConfigurationProvider)
             .OrderByDescending(p => p.Name)
             .ToArrayAsync(cancellationToken);

@@ -3,7 +3,7 @@ namespace RatesOfPlayers.Domain.Bets;
 /// <summary>
 /// Модель ставки.
 /// </summary>
-public class Bet
+public class Bet : IVersionedEntity
 {
     /// <summary>
     /// Идентификатор ставки.
@@ -34,4 +34,9 @@ public class Bet
     /// Дата расчёта.
     /// </summary>
     public required DateTime SettlementDate { get; set; }
+    
+    /// <summary>
+    /// Поле для оптимистичной блокировки
+    /// </summary>
+    public int Version { get; set; }
 }

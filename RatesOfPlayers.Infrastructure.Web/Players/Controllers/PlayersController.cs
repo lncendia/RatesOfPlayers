@@ -22,6 +22,9 @@ public class PlayersController(ISender mediator, IMapper mapper) : Controller
     [HttpGet]
     public async Task<IActionResult> Report(GetReportViewModel model)
     {
+        // Проверка валидности модели
+        if (!ModelState.IsValid) return View(model);
+        
         // Создание запроса с указанным ID игрока
         var query = mapper.Map<GetReportQuery>(model);
         
@@ -29,10 +32,13 @@ public class PlayersController(ISender mediator, IMapper mapper) : Controller
         var players = await mediator.Send(query);
         
         // Преобразование данных в ViewModel
-        var viewModel = mapper.Map<IEnumerable<PlayerReportViewModel>>(players);
+        var playersViewModel = mapper.Map<PlayerReportViewModel[]>(players);
+        
+        // Устанавливаем игроков
+        model.Players = playersViewModel;
         
         // Возврат представления с данными
-        return View(viewModel);
+        return View(model);
     }
     
     /// <summary>
@@ -143,7 +149,7 @@ public class PlayersController(ISender mediator, IMapper mapper) : Controller
         
         // Отправка команды через медиатор
         await mediator.Send(command);
-        
+
         // Перенаправление на страницу деталей
         return RedirectToAction(nameof(Details), new { id });
     }

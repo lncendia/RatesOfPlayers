@@ -9,16 +9,6 @@ namespace RatesOfPlayers.Infrastructure.Web.Transactions.ViewModels;
 public class EditTransactionViewModel
 {
     /// <summary>
-    /// Уникальный идентификатор транзакции
-    /// </summary>
-    /// <remarks>
-    /// Должен быть положительным числом
-    /// </remarks>
-    [Required(ErrorMessage = "Идентификатор транзакции обязателен")]
-    [Range(1, long.MaxValue, ErrorMessage = "Идентификатор транзакции должен быть положительным числом")]
-    public required long Id { get; init; }
-    
-    /// <summary>
     /// Идентификатор игрока, связанного с транзакцией
     /// </summary>
     /// <remarks>
@@ -35,6 +25,7 @@ public class EditTransactionViewModel
     [Display(Name = "Сумма транзакции")]
     [Required(ErrorMessage = "Сумма транзакции обязательна для заполнения")]
     [DataType(DataType.Currency, ErrorMessage = "Некорректный формат суммы")]
+    [Range(0.01, double.MaxValue, ErrorMessage = "Сумма должна быть положительной")]
     public required decimal Amount { get; init; }
     
     /// <summary>
@@ -54,6 +45,5 @@ public class EditTransactionViewModel
     [Display(Name = "Дата транзакции")]
     [Required(ErrorMessage = "Дата транзакции обязательна для заполнения")]
     [DataType(DataType.DateTime, ErrorMessage = "Некорректный формат даты")]
-    [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}", ApplyFormatInEditMode = true)]
     public required DateTime Date { get; init; }
 }

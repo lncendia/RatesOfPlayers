@@ -1,9 +1,10 @@
-using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using RatesOfPlayers.Application.Abstractions.Commands.Bets;
-using RatesOfPlayers.Application.Abstractions.DTOs.Bets;
+using RatesOfPlayers.Application.Abstractions.Exceptions;
 using RatesOfPlayers.Domain;
 using RatesOfPlayers.Domain.Bets;
+using RatesOfPlayers.Domain.Players;
 
 namespace RatesOfPlayers.Application.Services.CommandHandlers.Bets;
 
@@ -11,8 +12,7 @@ namespace RatesOfPlayers.Application.Services.CommandHandlers.Bets;
 /// Обработчик команды для создания ставки
 /// </summary>
 /// <param name="uow">Единица работы</param>
-/// <param name="mapper">Маппер данных</param>
-public class CreateBetCommandHandler(IUnitOfWork uow, IMapper mapper) : IRequestHandler<CreateBetCommand, long>
+public class CreateBetCommandHandler(IUnitOfWork uow) : IRequestHandler<CreateBetCommand, long>
 {
     /// <summary>
     /// Метод обработчик команды для создания ставки
@@ -21,6 +21,13 @@ public class CreateBetCommandHandler(IUnitOfWork uow, IMapper mapper) : IRequest
     /// <param name="cancellationToken">Токен отмены операции</param>
     public async Task<long> Handle(CreateBetCommand request, CancellationToken cancellationToken)
     {
+        // Проверяем существование игрока
+        var playerExists = await uow.Query<Player>()
+            .AnyAsync(p => p.Id == request.PlayerId, cancellationToken);
+        
+        if (!playerExists)
+            throw new PlayerNotFoundException(request.PlayerId);
+        
         // Создаём Модель ставки
         var bet = new Bet
         {

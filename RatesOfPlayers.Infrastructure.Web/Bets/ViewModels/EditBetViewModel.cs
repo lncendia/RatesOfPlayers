@@ -8,17 +8,6 @@ namespace RatesOfPlayers.Infrastructure.Web.Bets.ViewModels;
 public class EditBetViewModel
 {
     /// <summary>
-    /// Уникальный идентификатор ставки.
-    /// </summary>
-    /// <remarks>
-    /// Должен быть положительным числом
-    /// </remarks>
-    [Display(Name = "Идентификатор ставки")]
-    [Required(ErrorMessage = "Идентификатор ставки обязателен")]
-    [Range(1, long.MaxValue, ErrorMessage = "Идентификатор ставки должен быть положительным числом")]
-    public required long Id { get; init; }
-    
-    /// <summary>
     /// Идентификатор игрока.
     /// </summary>
     /// <remarks>
@@ -35,6 +24,7 @@ public class EditBetViewModel
     [Display(Name = "Сумма ставки")]
     [Required(ErrorMessage = "Сумма ставки обязательна")]
     [DataType(DataType.Currency, ErrorMessage = "Некорректный формат суммы")]
+    [Range(0.01, double.MaxValue, ErrorMessage = "Сумма должна быть положительной")]
     public required decimal Amount { get; init; }
     
     /// <summary>
@@ -46,7 +36,6 @@ public class EditBetViewModel
     [Display(Name = "Дата ставки")]
     [Required(ErrorMessage = "Дата ставки обязательна для заполнения")]
     [DataType(DataType.DateTime, ErrorMessage = "Некорректный формат даты")]
-    [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}", ApplyFormatInEditMode = true)]
     public required DateTime Date { get; init; }
     
     /// <summary>
@@ -55,6 +44,7 @@ public class EditBetViewModel
     [Display(Name = "Сумма выигрыша")]
     [Required(ErrorMessage = "Сумма выигрыша обязательна")]
     [DataType(DataType.Currency, ErrorMessage = "Некорректный формат суммы")]
+    [Range(0, double.MaxValue, ErrorMessage = "Сумма должна быть положительной")]
     public required decimal Prize { get; init; }
     
     /// <summary>
@@ -63,6 +53,5 @@ public class EditBetViewModel
     [Display(Name = "Дата расчёта")]
     [Required(ErrorMessage = "Дата расчёта обязательна для заполнения")]
     [DataType(DataType.DateTime, ErrorMessage = "Некорректный формат даты")]
-    [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}", ApplyFormatInEditMode = true)]
     public required DateTime SettlementDate { get; init; }
 }

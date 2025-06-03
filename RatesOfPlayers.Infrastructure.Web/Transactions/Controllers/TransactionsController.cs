@@ -2,6 +2,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using RatesOfPlayers.Application.Abstractions.Commands.Transactions;
+using RatesOfPlayers.Application.Abstractions.Exceptions;
 using RatesOfPlayers.Application.Abstractions.Queries.Transactions;
 using RatesOfPlayers.Infrastructure.Web.Transactions.ViewModels;
 
@@ -22,13 +23,13 @@ public class TransactionsController(ISender mediator, IMapper mapper) : Controll
     {
         // Создание запроса на получение списка транзакций
         var query = new GetTransactionsQuery();
-        
+
         // Отправка запроса через медиатор
         var transactions = await mediator.Send(query);
-        
+
         // Преобразование данных в ViewModel
         var viewModel = mapper.Map<IEnumerable<TransactionViewModel>>(transactions);
-        
+
         // Возврат представления с данными
         return View(viewModel);
     }
@@ -42,13 +43,13 @@ public class TransactionsController(ISender mediator, IMapper mapper) : Controll
     {
         // Создание запроса с указанным ID транзакции
         var query = new GetTransactionQuery { Id = id };
-        
+
         // Отправка запроса через медиатор
         var transactions = await mediator.Send(query);
-        
+
         // Преобразование данных в ViewModel
         var viewModel = mapper.Map<TransactionViewModel>(transactions);
-        
+
         // Возврат представления с данными
         return View(viewModel);
     }
@@ -73,15 +74,26 @@ public class TransactionsController(ISender mediator, IMapper mapper) : Controll
     {
         // Проверка валидности модели
         if (!ModelState.IsValid) return View(model);
-        
+
         // Преобразование ViewModel в команду
         var command = mapper.Map<CreateTransactionCommand>(model);
-        
-        // Отправка команды через медиатор и получение ID нового транзакции
-        var id = await mediator.Send(command);
-        
-        // Перенаправление на страницу деталей
-        return RedirectToAction(nameof(Details), new { id });
+
+        try
+        {
+            // Отправка команды через медиатор и получение ID нового транзакции
+            var id = await mediator.Send(command);
+
+            // Перенаправление на страницу деталей
+            return RedirectToAction(nameof(Details), new { id });
+        }
+        catch (PlayerNotFoundException)
+        {
+            // Добавляем ошибку в модель
+            ModelState.AddModelError("PlayerId", "Игрок не найден");
+
+            // Возвращаем представление
+            return View(model);
+        }
     }
 
     /// <summary>
@@ -93,13 +105,13 @@ public class TransactionsController(ISender mediator, IMapper mapper) : Controll
     {
         // Создание запроса с указанным ID
         var query = new GetTransactionQuery { Id = id };
-        
+
         // Отправка запроса через медиатор
         var transactions = await mediator.Send(query);
-        
+
         // Преобразование данных в ViewModel для редактирования
         var viewModel = mapper.Map<EditTransactionViewModel>(transactions);
-        
+
         // Возврат представления с данными
         return View(viewModel);
     }
@@ -116,15 +128,26 @@ public class TransactionsController(ISender mediator, IMapper mapper) : Controll
     {
         // Проверка валидности модели
         if (!ModelState.IsValid) return View(model);
-        
+
         // Преобразование ViewModel в команду с добавлением ID
         var command = mapper.Map<UpdateTransactionCommand>(model, opt => opt.Items.Add("id", id));
-        
-        // Отправка команды через медиатор
-        await mediator.Send(command);
-        
-        // Перенаправление на страницу деталей
-        return RedirectToAction(nameof(Details), new { id });
+
+        try
+        {
+            // Отправка команды через медиатор
+            await mediator.Send(command);
+
+            // Перенаправление на страницу деталей
+            return RedirectToAction(nameof(Details), new { id });
+        }
+        catch (PlayerNotFoundException)
+        {
+            // Добавляем ошибку в модель
+            ModelState.AddModelError("PlayerId", "Игрок не найден");
+
+            // Возвращаем представление
+            return View(model);
+        }
     }
 
     /// <summary>
@@ -136,13 +159,13 @@ public class TransactionsController(ISender mediator, IMapper mapper) : Controll
     {
         // Создание запроса с указанным ID
         var query = new GetTransactionQuery { Id = id };
-        
+
         // Отправка запроса через медиатор
         var transactions = await mediator.Send(query);
-        
+
         // Преобразование данных в ViewModel
         var viewModel = mapper.Map<TransactionViewModel>(transactions);
-        
+
         // Возврат представления с данными
         return View(viewModel);
     }
@@ -159,10 +182,10 @@ public class TransactionsController(ISender mediator, IMapper mapper) : Controll
     {
         // Создание команды на удаление
         var command = new DeleteTransactionCommand { Id = id };
-        
+
         // Отправка команды через медиатор
         await mediator.Send(command);
-        
+
         // Перенаправление на список транзакций
         return RedirectToAction(nameof(Index));
     }

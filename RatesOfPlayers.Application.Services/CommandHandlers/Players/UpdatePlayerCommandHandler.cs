@@ -10,8 +10,7 @@ namespace RatesOfPlayers.Application.Services.CommandHandlers.Players;
 /// Обработчик команды для изменения данных игрока
 /// </summary>
 /// <param name="uow">Единица работы</param>
-public class UpdatePlayerCommandHandler(
-    IUnitOfWork uow) : IRequestHandler<UpdatePlayerCommand>
+public class UpdatePlayerCommandHandler(IUnitOfWork uow) : IRequestHandler<UpdatePlayerCommand>
 {
     /// <summary>
     /// Метод обработчик команды для изменения данных игрока

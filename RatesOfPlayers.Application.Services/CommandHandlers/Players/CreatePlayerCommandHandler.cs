@@ -1,7 +1,6 @@
 using AutoMapper;
 using MediatR;
 using RatesOfPlayers.Application.Abstractions.Commands.Players;
-using RatesOfPlayers.Application.Abstractions.DTOs.Players;
 using RatesOfPlayers.Domain;
 using RatesOfPlayers.Domain.Players;
 

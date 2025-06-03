@@ -1,10 +1,10 @@
-using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using RatesOfPlayers.Application.Abstractions.Commands.Transactions;
-using RatesOfPlayers.Application.Abstractions.DTOs.Transactions;
+using RatesOfPlayers.Application.Abstractions.Exceptions;
 using RatesOfPlayers.Domain;
+using RatesOfPlayers.Domain.Players;
 using RatesOfPlayers.Domain.Transactions;
-using RatesOfPlayers.Domain.Transactions.Enums;
 
 namespace RatesOfPlayers.Application.Services.CommandHandlers.Transactions;
 
@@ -12,9 +12,7 @@ namespace RatesOfPlayers.Application.Services.CommandHandlers.Transactions;
 /// Обработчик команды для создания транзакции
 /// </summary>
 /// <param name="uow">Единица работы</param>
-/// <param name="mapper">Маппер данных</param>
-public class CreateTransactionCommandHandler(IUnitOfWork uow, IMapper mapper)
-    : IRequestHandler<CreateTransactionCommand, long>
+public class CreateTransactionCommandHandler(IUnitOfWork uow) : IRequestHandler<CreateTransactionCommand, long>
 {
     /// <summary>
     /// Метод обработчик команды для создания транзакции
@@ -23,6 +21,13 @@ public class CreateTransactionCommandHandler(IUnitOfWork uow, IMapper mapper)
     /// <param name="cancellationToken">Токен отмены операции</param>
     public async Task<long> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
     {
+        // Проверяем существование игрока
+        var playerExists = await uow.Query<PlayerWithBalance>()
+            .AnyAsync(p => p.Id == request.PlayerId, cancellationToken);
+        
+        if (!playerExists)
+            throw new PlayerNotFoundException(request.PlayerId);
+        
         // Создаём Модель транзакции
         var transaction = new Transaction
         {

@@ -29,6 +29,10 @@ public class PlayerConfiguration : IEntityTypeConfiguration<Player>
             .HasMaxLength(100) // Ограничение длины имени
             .IsRequired();
         
+        // Настраиваем Version для оптимистичной блокировки
+        builder.Property(b => b.Version)
+            .IsConcurrencyToken();  // Помечаем как токен параллелизма
+        
         // Индексы для ускорения запросов
         builder.HasIndex(p => p.Name).IsUnique();
 

@@ -20,7 +20,7 @@ public class PlayerDto
     /// <summary>
     /// Баланс игрока.
     /// </summary>
-    public required decimal Amount { get; init; }
+    public required decimal Balance { get; init; }
     
     /// <summary>
     /// Дата регистрации.

@@ -26,7 +26,7 @@ public class GetPlayerQueryHandler(IUnitOfWork uow, IMapper mapper) : IRequestHa
     {
         // Получаем игрока по идентификатору из запроса
         var player = await uow
-            .Query<Player>()
+            .Query<PlayerWithBalance>()
             .ProjectTo<PlayerDto>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
         

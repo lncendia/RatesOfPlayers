@@ -29,6 +29,8 @@ public class BetViewModel
     /// Сумма ставки.
     /// </summary>
     [Display(Name = "Сумма ставки")]
+    [DataType(DataType.Currency)]
+    [DisplayFormat(DataFormatString = "{0:N2}")]
     public required decimal Amount { get; init; }
     
     /// <summary>
@@ -39,13 +41,15 @@ public class BetViewModel
     /// </remarks>
     [Display(Name = "Дата ставки")]
     [DataType(DataType.DateTime, ErrorMessage = "Некорректный формат даты")]
-    [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}", ApplyFormatInEditMode = true)]
+    [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}")]
     public required DateTime Date { get; init; }
     
     /// <summary>
     /// Сумма выигрыша.
     /// </summary>
     [Display(Name = "Сумма выигрыша")]
+    [DataType(DataType.Currency)]
+    [DisplayFormat(DataFormatString = "{0:N2}")]
     public required decimal Prize { get; init; }
     
     /// <summary>
@@ -53,6 +57,6 @@ public class BetViewModel
     /// </summary>
     [Display(Name = "Дата расчёта")]
     [DataType(DataType.DateTime, ErrorMessage = "Некорректный формат даты")]
-    [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}", ApplyFormatInEditMode = true)]
+    [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}")]
     public required DateTime SettlementDate { get; init; }
 }

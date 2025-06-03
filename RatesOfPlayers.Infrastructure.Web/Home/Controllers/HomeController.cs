@@ -15,7 +15,7 @@ public class HomeController : Controller
     /// Логгер.
     /// </summary>
     private readonly ILogger<HomeController> _logger;
-    
+
     /// <summary>
     /// Конструктор класса HomeController.
     /// </summary>
@@ -24,7 +24,7 @@ public class HomeController : Controller
     {
         _logger = logger;
     }
-    
+
     /// <summary>
     /// Действие для отображения домашней страницы.
     /// </summary>
@@ -33,7 +33,7 @@ public class HomeController : Controller
     {
         return View();
     }
-    
+
     /// <summary>
     /// Показывает страницу ошибки.
     /// </summary>
@@ -44,46 +44,44 @@ public class HomeController : Controller
         // Получаем контекст ошибки из HttpContext.
         var context = HttpContext.Features.Get<IExceptionHandlerFeature>();
 
-        // Если контекст ошибки существует.
-        if (context != null)
+        // Если контекст ошибки не существует.
+        if (context == null) return Ok();
+
+        // Получаем исключение из контекста ошибки.
+        var requestException = context.Error;
+
+        // Логгируем исключение
+        _logger.LogError(requestException, "Ошибка при обработке запроса");
+
+        // Определяем ресурс для отображения сообщения об ошибке на основе типа исключения.
+        string? resource;
+        switch (requestException)
         {
-            // Получаем исключение из контекста ошибки.
-            var requestException = context.Error;
-
-            // Логгируем исключение
-            _logger.LogError(requestException, "Ошибка при обработке запроса");
-            
-            // Определяем ресурс для отображения сообщения об ошибке на основе типа исключения.
-            string? resource;
-            switch (requestException)
-            {
-                case PlayerNotFoundException x:
-                    resource = $"Игрок с идентификатором {x.PlayerId} не найден."; 
-                    break;
-                case BetNotFoundException x: 
-                    resource = $"Ставка c идентификатором {x.BetId} не найдена."; 
-                    break;
-                case TransactionNotFoundException x: 
-                    resource = $"Транзакция с идентификатором {x.TransactionId} не найдена."; 
-                    break;
-                default:
-                    resource = "Возникла ошибка при обработке запроса.";
-                    break;
-            }
-            // Возвращаем представление с моделью ErrorViewModel, передавая сообщение об ошибке и идентификатор запроса.
-            return View(new ErrorViewModel
-            {
-                // Сообщение с ошибкой
-                Message = resource,
-
-                // Идентификатор запроса
-                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
-
-                // Url возврата
-                ReturnUrl = "/"
-            });
+            case PlayerNotFoundException x:
+                resource = $"Игрок с идентификатором {x.PlayerId} не найден.";
+                break;
+            case BetNotFoundException x:
+                resource = $"Ставка c идентификатором {x.BetId} не найдена.";
+                break;
+            case TransactionNotFoundException x:
+                resource = $"Транзакция с идентификатором {x.TransactionId} не найдена.";
+                break;
+            default:
+                resource = "Возникла ошибка при обработке запроса.";
+                break;
         }
-        // Возвращаем ответ Ok.
-        return Ok();
+
+        // Возвращаем представление с моделью ErrorViewModel, передавая сообщение об ошибке и идентификатор запроса.
+        return View(new ErrorViewModel
+        {
+            // Сообщение с ошибкой
+            Message = resource,
+
+            // Идентификатор запроса
+            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+
+            // Url возврата
+            ReturnUrl = "/"
+        });
     }
 }

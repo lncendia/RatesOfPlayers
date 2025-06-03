@@ -1,5 +1,4 @@
 using MediatR;
-using RatesOfPlayers.Application.Abstractions.DTOs.Bets;
 
 namespace RatesOfPlayers.Application.Abstractions.Commands.Bets;
 

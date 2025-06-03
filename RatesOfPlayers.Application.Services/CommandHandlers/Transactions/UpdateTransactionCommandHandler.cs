@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using RatesOfPlayers.Application.Abstractions.Commands.Transactions;
 using RatesOfPlayers.Application.Abstractions.Exceptions;
 using RatesOfPlayers.Domain;
+using RatesOfPlayers.Domain.Players;
 using RatesOfPlayers.Domain.Transactions;
 
 namespace RatesOfPlayers.Application.Services.CommandHandlers.Transactions;
@@ -29,6 +30,13 @@ public class UpdateTransactionCommandHandler(
         if (transaction is null)
             throw new TransactionNotFoundException(request.Id);
 
+        // Проверяем существование игрока
+        var playerExists = request.PlayerId == transaction.PlayerId || await uow.Query<Player>()
+            .AnyAsync(p => p.Id == request.PlayerId, cancellationToken);
+        
+        if (!playerExists)
+            throw new PlayerNotFoundException(request.PlayerId);
+        
         // Устанавливаем сумму транзакции, если она указана в запросе
         transaction.Amount = request.Amount;
 

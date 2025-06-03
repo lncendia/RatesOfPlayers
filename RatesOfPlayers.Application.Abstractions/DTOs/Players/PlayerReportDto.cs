@@ -17,9 +17,4 @@ public class PlayerReportDto : PlayerDto
     /// Общая сумма всех депозитов игрока
     /// </summary>
     public required decimal TotalDeposits { get; init; }
-    
-    /// <summary>
-    /// Текущий баланс игрока
-    /// </summary>
-    public required decimal Balance { get; init; }
 }

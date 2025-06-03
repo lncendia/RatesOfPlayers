@@ -27,8 +27,7 @@ public class GetReportQueryHandler(IUnitOfWork uow, IMapper mapper)
     /// <param name="request">Параметры запроса</param>
     /// <param name="cancellationToken">Токен отмены для прерывания операции</param>
     /// <returns>Коллекция DTO с игроками и их финансовыми показателями</returns>
-    public async Task<IReadOnlyList<PlayerReportDto>> Handle(GetReportQuery request,
-        CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<PlayerReportDto>> Handle(GetReportQuery request, CancellationToken cancellationToken)
     {
         // Создание базового запроса с учетом фильтра по статусу
         var query = uow.Query<PlayerWithBalance>();

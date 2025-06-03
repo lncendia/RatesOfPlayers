@@ -32,6 +32,10 @@ public class BetConfiguration : IEntityTypeConfiguration<Bet>
             .HasForeignKey(b => b.PlayerId)
             .OnDelete(DeleteBehavior.Cascade);
         
+        // Настраиваем Version для оптимистичной блокировки
+        builder.Property(b => b.Version)
+            .IsConcurrencyToken(); // Помечаем как токен параллелизма
+        
         // Индекс по дате ставки
         builder.HasIndex(b => b.Date);
         
