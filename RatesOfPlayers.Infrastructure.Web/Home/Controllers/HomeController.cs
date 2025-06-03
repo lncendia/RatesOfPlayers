@@ -1,19 +1,71 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using RatesOfPlayers.Infrastructure.Web.Home.Models;
+using RatesOfPlayers.Infrastructure.Web.Home.ViewModels;
 
 namespace RatesOfPlayers.Infrastructure.Web.Home.Controllers;
 
+/// <summary>
+/// Контроллер домашней страницы.
+/// </summary>
 public class HomeController : Controller
 {
+    /// <summary>
+    /// Логгер.
+    /// </summary>
+    private readonly ILogger<HomeController> _logger;
+    
+    /// <summary>
+    /// Конструктор класса HomeController.
+    /// </summary>
+    /// <param name="logger">Логгер.</param>
+    public HomeController(ILogger<HomeController> logger)
+    {
+        _logger = logger;
+    }
+    
+    /// <summary>
+    /// Действие для отображения домашней страницы.
+    /// </summary>
+    /// <returns>Результат действия.</returns>
     public IActionResult Index()
     {
         return View();
     }
     
+    /// <summary>
+    /// Показывает страницу ошибки.
+    /// </summary>
+    /// <returns>Результат действия.</returns>
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    public IActionResult Error(string? errorId)
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        // Получаем контекст ошибки из HttpContext.
+        var context = HttpContext.Features.Get<IExceptionHandlerFeature>();
+
+        // Если контекст ошибки существует.
+        if (context != null)
+        {
+            // Получаем исключение из контекста ошибки.
+            var requestException = context.Error;
+
+            // Логгируем исключение
+            _logger.LogError(requestException, "Ошибка при обработке запроса");
+
+            // Возвращаем представление с моделью ErrorViewModel, передавая сообщение об ошибке и идентификатор запроса.
+            return View(new ErrorViewModel
+            {
+                // Сообщение с ошибкой
+                Message = requestException.Message,
+
+                // Идентификатор запроса
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+
+                // Url возврата
+                ReturnUrl = "/"
+            });
+        }
+        // Возвращаем ответ Ok.
+        return Ok();
     }
 }

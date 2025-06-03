@@ -1,0 +1,26 @@
+@model RatesOfPlayers.Infrastructure.Web.Home.ViewModels.ErrorViewModel
+
+@{
+    ViewData["Title"] = "Возникла ошибка";
+}
+
+<div class="card-body">
+    <h5 class="card-title">Возникла ошибка</h5>
+    <div class="alert alert-danger mt-4">
+        <strong>@Model.Message</strong>
+    </div>
+    <div class="container-btn mb-4">
+        <div class="wrap-btn on-hover">
+            <div class="bg-btn"></div>
+            <a class="m-btn" href="@Model.ReturnUrl">
+                Вернуться
+            </a>
+        </div>
+    </div>
+    @if (Model.ShowRequestId)
+    {
+        <div class="request-id">
+            Идентификатор запроса:<br>@Model.RequestId
+        </div>
+    }
+</div>
