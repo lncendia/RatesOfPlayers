@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RatesOfPlayers.Application.Abstractions.DTOs.Players;
 using RatesOfPlayers.Domain.Players;
 
 namespace RatesOfPlayers.Infrastructure.Storage.Configurations;

@@ -1,6 +1,6 @@
 using RatesOfPlayers.Domain.Players.Enums;
 
-namespace RatesOfPlayers.Domain.Players;
+namespace RatesOfPlayers.Application.Abstractions.DTOs.Players;
 
 /// <summary>
 /// Расширенная модель игрока с финансовой информацией

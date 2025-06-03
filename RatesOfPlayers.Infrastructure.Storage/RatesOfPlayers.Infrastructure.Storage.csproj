@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\RatesOfPlayers.Domain\RatesOfPlayers.Domain.csproj" />
+      <ProjectReference Include="..\RatesOfPlayers.Application.Abstractions\RatesOfPlayers.Application.Abstractions.csproj" />
     </ItemGroup>
 
     <ItemGroup>

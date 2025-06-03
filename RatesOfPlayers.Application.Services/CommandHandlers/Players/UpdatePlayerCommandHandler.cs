@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using RatesOfPlayers.Application.Abstractions.Commands.Players;
 using RatesOfPlayers.Application.Abstractions.Exceptions;
 using RatesOfPlayers.Domain;
@@ -20,7 +21,7 @@ public class UpdatePlayerCommandHandler(IUnitOfWork uow) : IRequestHandler<Updat
     public async Task Handle(UpdatePlayerCommand request, CancellationToken cancellationToken)
     {
         // Получаем игрока по идентификатору из запроса
-        var player = uow.Query<Player>().FirstOrDefault(p => p.Id == request.Id);
+        var player = await uow.Query<Player>().FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken: cancellationToken);
         
         // Если игрок не найден, выбрасываем исключение
         if (player == null) throw new PlayerNotFoundException(request.Id);
