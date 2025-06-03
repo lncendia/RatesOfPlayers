@@ -23,6 +23,11 @@ public class UpdateBetCommand : IRequest
     public required decimal Amount { get; init; }
     
     /// <summary>
+    /// Дата ставки.
+    /// </summary>
+    public required DateTime Date { get; init; }
+    
+    /// <summary>
     /// Сумма выигрыша.
     /// </summary>
     public required decimal Prize { get; init; }
@@ -30,5 +35,5 @@ public class UpdateBetCommand : IRequest
     /// <summary>
     /// Дата расчёта.
     /// </summary>
-    public required DateTime SettlementDate { get; set; }
+    public required DateTime SettlementDate { get; init; }
 }

@@ -23,7 +23,7 @@ public class Bet
     /// <summary>
     /// Дата ставки.
     /// </summary>
-    public required DateTime Date { get; init; }
+    public required DateTime Date { get; set; }
 
     /// <summary>
     /// Сумма выигрыша.

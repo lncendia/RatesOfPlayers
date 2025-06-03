@@ -12,14 +12,14 @@ namespace RatesOfPlayers.Application.Services.CommandHandlers.Bets;
 /// </summary>
 /// <param name="uow">Единица работы</param>
 /// <param name="mapper">Маппер данных</param>
-public class CreateBetCommandHandler(IUnitOfWork uow, IMapper mapper) : IRequestHandler<CreateBetCommand, BetDto>
+public class CreateBetCommandHandler(IUnitOfWork uow, IMapper mapper) : IRequestHandler<CreateBetCommand, long>
 {
     /// <summary>
     /// Метод обработчик команды для создания ставки
     /// </summary>
     /// <param name="request">Команда для создания ставки</param>
     /// <param name="cancellationToken">Токен отмены операции</param>
-    public async Task<BetDto> Handle(CreateBetCommand request, CancellationToken cancellationToken)
+    public async Task<long> Handle(CreateBetCommand request, CancellationToken cancellationToken)
     {
         // Создаём Модель ставки
         var bet = new Bet
@@ -37,6 +37,7 @@ public class CreateBetCommandHandler(IUnitOfWork uow, IMapper mapper) : IRequest
         // Сохраняем изменения в базе данных
         await uow.SaveChangesAsync(cancellationToken);
         
-        return mapper.Map<BetDto>(bet);;
+        // Возвращаем идентификатор созданной ставки
+        return bet.Id;
     }
 }

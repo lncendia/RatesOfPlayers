@@ -35,6 +35,9 @@ public class UpdateBetCommandHandler(IUnitOfWork uow) : IRequestHandler<UpdateBe
 
         // Устанавливаем размер выигрыша
         bet.Prize = request.Prize;
+        
+        // Устанавливаем дату ставки
+        bet.Date = request.Date;
 
         // Устанавливаем дату расчёта
         bet.SettlementDate = request.SettlementDate;

@@ -6,7 +6,7 @@ namespace RatesOfPlayers.Application.Abstractions.Commands.Bets;
 /// <summary>
 /// Команда для создания игрока.
 /// </summary>
-public class CreateBetCommand : IRequest<BetDto>
+public class CreateBetCommand : IRequest<long>
 {
     /// <summary>
     /// Уникальный идентификатор игрока.
