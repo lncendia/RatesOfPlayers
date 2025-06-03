@@ -39,9 +39,6 @@ public class EditTransactionViewModel
     /// <summary>
     /// Дата проведения транзакции
     /// </summary>
-    /// <remarks>
-    /// Не может быть будущей датой
-    /// </remarks>
     [Display(Name = "Дата транзакции")]
     [Required(ErrorMessage = "Дата транзакции обязательна для заполнения")]
     [DataType(DataType.DateTime, ErrorMessage = "Некорректный формат даты")]

@@ -30,9 +30,6 @@ public class EditBetViewModel
     /// <summary>
     /// Дата ставки.
     /// </summary>
-    /// <remarks>
-    /// Не может быть будущей датой
-    /// </remarks>
     [Display(Name = "Дата ставки")]
     [Required(ErrorMessage = "Дата ставки обязательна для заполнения")]
     [DataType(DataType.DateTime, ErrorMessage = "Некорректный формат даты")]

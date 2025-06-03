@@ -36,9 +36,6 @@ public class BetViewModel
     /// <summary>
     /// Дата ставки.
     /// </summary>
-    /// <remarks>
-    /// Не может быть будущей датой
-    /// </remarks>
     [Display(Name = "Дата ставки")]
     [DataType(DataType.DateTime, ErrorMessage = "Некорректный формат даты")]
     [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}")]
