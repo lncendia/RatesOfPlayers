@@ -17,7 +17,7 @@ public class PlayerViewModel
     /// <summary>
     /// Полное имя игрока
     /// </summary>
-    [Display(Name = "Имя игрока")]
+    [Display(Name = "ФИО")]
     public required string Name { get; init; }
 
     /// <summary>
@@ -25,6 +25,7 @@ public class PlayerViewModel
     /// </summary>
     [Display(Name = "Баланс")]
     [DataType(DataType.Currency)]
+    [DisplayFormat(DataFormatString = "{0:N2}")]
     public decimal Balance { get; init; }
 
     /// <summary>

@@ -26,6 +26,7 @@ public class GetBetsQueryHandler(IUnitOfWork uow, IMapper mapper) : IRequestHand
         // Получение и проекция ставок в DTO
         return await uow.Query<Bet>()
             .ProjectTo<BetDto>(mapper.ConfigurationProvider)
+            .OrderByDescending(b => b.Date)
             .ToArrayAsync(cancellationToken);
     }
 }

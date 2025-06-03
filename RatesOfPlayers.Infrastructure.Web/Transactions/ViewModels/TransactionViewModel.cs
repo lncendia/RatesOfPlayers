@@ -25,6 +25,7 @@ public class TransactionViewModel
     /// </summary>
     [Display(Name = "Сумма")]
     [DataType(DataType.Currency)]
+    [DisplayFormat(DataFormatString = "{0:N2}")]
     public required decimal Amount { get; init; }
     
     /// <summary>

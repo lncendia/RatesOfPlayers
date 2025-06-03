@@ -162,7 +162,7 @@ public class BetsController(ISender mediator, IMapper mapper) : Controller
         // Отправка команды через медиатор
         await mediator.Send(command);
           
-        // Перенаправление на список ставок  
+        // Перенаправление на список ставок
         return RedirectToAction(nameof(Index));
     }
 }

@@ -76,14 +76,43 @@ namespace RatesOfPlayers.Infrastructure.Storage.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.HasIndex("RegistrationDate");
-
                     b.HasIndex("Status");
 
                     b.ToTable("Players", null, t =>
                         {
                             t.HasCheckConstraint("CK_Players_Name_Length", "LENGTH(Name) >= 3");
                         });
+                });
+
+            modelBuilder.Entity("RatesOfPlayers.Domain.Players.PlayerWithBalance", b =>
+                {
+                    b.Property<long>("Id")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("RegistrationDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("TotalBets")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("TotalDeposits")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("PlayerBalanceView", (string)null);
                 });
 
             modelBuilder.Entity("RatesOfPlayers.Domain.Transactions.Transaction", b =>

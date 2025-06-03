@@ -11,51 +11,65 @@ namespace RatesOfPlayers.Infrastructure.Storage.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("""
-                                 EXPLAIN QUERY PLAN SELECT 
-                                   p.Id, 
-                                   p.Name, 
-                                   p.Status, 
-                                   p.RegistrationDate, 
-                                   IFNULL(
-                                     (
-                                       SELECT 
-                                         SUM(b.Amount) 
-                                       FROM 
-                                         Bets b 
-                                       WHERE 
-                                         b.PlayerId = p.Id
-                                     ), 
-                                     0
-                                   ) AS TotalBets, 
-                                   (
-                                     IFNULL(
-                                       (
-                                         SELECT 
-                                           SUM(
-                                             CASE WHEN t.Type = 1 THEN t.Amount WHEN t.Type = 2 THEN - t.Amount ELSE 0 END
-                                           ) 
-                                         FROM 
-                                           Transactions t 
-                                         WHERE 
-                                           t.PlayerId = p.Id 
-                                       ), 
-                                       0
-                                     ) + IFNULL(
-                                       (
-                                         SELECT 
-                                           SUM(b.Prize - b.Amount) 
-                                         FROM 
-                                           Bets b 
-                                         WHERE 
-                                           b.PlayerId = p.Id
-                                       ), 
-                                       0
-                                     )
-                                   ) AS Balance 
-                                 FROM 
-                                   Players p;
-                                 """);
+            migrationBuilder.Sql(
+                """
+                CREATE VIEW PlayerBalanceView AS
+                SELECT
+                p.Id, 
+                p.Name, 
+                p.Status, 
+                p.RegistrationDate, 
+                IFNULL(
+                  (
+                    SELECT 
+                      SUM(b.Amount) 
+                    FROM 
+                      Bets b 
+                    WHERE 
+                      b.PlayerId = p.Id
+                  ), 
+                  0
+                ) AS TotalBets, 
+                IFNULL(
+                  (
+                    SELECT 
+                      SUM(t.Amount) 
+                    FROM 
+                      Transactions t 
+                    WHERE 
+                      t.PlayerId = p.Id 
+                      AND t.Type = 1
+                  ), 
+                  0
+                ) AS TotalDeposits, 
+                (
+                  IFNULL(
+                    (
+                      SELECT 
+                        SUM(
+                          CASE WHEN t.Type = 1 THEN t.Amount WHEN t.Type = 2 THEN - t.Amount ELSE 0 END
+                        ) 
+                      FROM 
+                        Transactions t 
+                      WHERE 
+                        t.PlayerId = p.Id
+                    ), 
+                    0
+                  ) + IFNULL(
+                    (
+                      SELECT 
+                        SUM(b.Prize - b.Amount) 
+                      FROM 
+                        Bets b 
+                      WHERE 
+                        b.PlayerId = p.Id
+                    ), 
+                    0
+                  )
+                ) AS Balance 
+                FROM 
+                  Players p;
+                """);
             
             migrationBuilder.CreateTable(
                 name: "Players",
@@ -139,11 +153,6 @@ namespace RatesOfPlayers.Infrastructure.Storage.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Players_RegistrationDate",
-                table: "Players",
-                column: "RegistrationDate");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Players_Status",
                 table: "Players",
                 column: "Status");
@@ -162,6 +171,8 @@ namespace RatesOfPlayers.Infrastructure.Storage.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql("DROP VIEW IF EXISTS PlayerBalanceView;");
+            
             migrationBuilder.DropTable(
                 name: "Bets");
 

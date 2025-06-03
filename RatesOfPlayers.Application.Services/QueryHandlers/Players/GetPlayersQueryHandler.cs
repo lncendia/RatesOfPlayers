@@ -25,6 +25,7 @@ public class GetPlayersQueryHandler(IUnitOfWork uow, IMapper mapper) : IRequestH
         // Получение и проекция игроков в DTO
         return await uow.Query<Player>()
             .ProjectTo<PlayerDto>(mapper.ConfigurationProvider)
+            .OrderByDescending(p => p.Name)
             .ToArrayAsync(cancellationToken);
     }
 }

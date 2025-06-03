@@ -14,7 +14,8 @@ public class CreatePlayerViewModel
     [Display(Name = "Имя игрока")]
     [Required(ErrorMessage = "Имя игрока обязательно для заполнения")]
     [StringLength(100, MinimumLength = 3, ErrorMessage = "Имя должно содержать от 3 до 100 символов")]
-    [RegularExpression(@"^[А-Яа-яЁёA-Za-z\s\.\-]+$", ErrorMessage = "Допустимы только буквы, пробелы, точки и дефисы")]
+    [RegularExpression(@"^[А-ЯЁ][а-яё]+(-[А-ЯЁ][а-яё]+)?\s[А-ЯЁ]\.[А-ЯЁ]\.$", 
+        ErrorMessage = "Формат: 'Фамилия И.О.' или 'Фамилия-Фамилия И.О.'")]
     public required string Name { get; init; }
 
     /// <summary>
@@ -22,5 +23,6 @@ public class CreatePlayerViewModel
     /// </summary>
     [Display(Name = "Статус")]
     [Required(ErrorMessage = "Необходимо указать статус игрока")]
+    [EnumDataType(typeof(PlayerStatusForView), ErrorMessage = "Некорректный тип статуса")]
     public PlayerStatusForView Status { get; init; } = PlayerStatusForView.New;
 }

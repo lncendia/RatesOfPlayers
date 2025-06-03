@@ -17,6 +17,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     {
         // Применяем конфигурацию для сущности Player
         modelBuilder.ApplyConfiguration(new PlayerConfiguration());
+        
+        // Применяем конфигурацию для сущности PlayerWithBalance
+        modelBuilder.ApplyConfiguration(new PlayerWithBalanceConfiguration());
 
         // Применяем конфигурацию для сущности Bet
         modelBuilder.ApplyConfiguration(new BetConfiguration());

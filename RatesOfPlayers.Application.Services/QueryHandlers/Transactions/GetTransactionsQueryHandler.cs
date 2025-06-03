@@ -28,6 +28,7 @@ public class GetTransactionsQueryHandler(
         // Получение и проекций транзакций в DTO
         return await uow.Query<Transaction>()
             .ProjectTo<TransactionDto>(mapper.ConfigurationProvider)
+            .OrderByDescending(b => b.Date)
             .ToArrayAsync(cancellationToken);
     }
 }

@@ -24,20 +24,23 @@ public class EditTransactionViewModel
     /// <remarks>
     /// Должен быть положительным числом
     /// </remarks>
-    [Required(ErrorMessage = "Идентификатор игрока обязателен")]
+    [Display(Name = "ID игрока")]
+    [Required(ErrorMessage = "Идентификатор игрока обязателен для заполнения")]
     [Range(1, long.MaxValue, ErrorMessage = "Идентификатор игрока должен быть положительным числом")]
     public required long PlayerId { get; init; }
     
     /// <summary>
     /// Сумма транзакции
     /// </summary>
-    [Required(ErrorMessage = "Сумма транзакции обязательна")]
+    [Display(Name = "Сумма транзакции")]
+    [Required(ErrorMessage = "Сумма транзакции обязательна для заполнения")]
     [DataType(DataType.Currency, ErrorMessage = "Некорректный формат суммы")]
     public required decimal Amount { get; init; }
     
     /// <summary>
     /// Тип транзакции
     /// </summary>
+    [Display(Name = "Тип транзакции")]
     [Required(ErrorMessage = "Тип транзакции обязателен для заполнения")]
     [EnumDataType(typeof(TransactionTypeForView), ErrorMessage = "Некорректный тип транзакции")]
     public required TransactionTypeForView Type { get; init; }

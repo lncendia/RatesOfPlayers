@@ -31,9 +31,6 @@ public class PlayerConfiguration : IEntityTypeConfiguration<Player>
         
         // Индексы для ускорения запросов
         builder.HasIndex(p => p.Name).IsUnique();
-        
-
-        builder.HasIndex(b => b.RegistrationDate);
 
         builder.HasIndex(p => p.Status);
         

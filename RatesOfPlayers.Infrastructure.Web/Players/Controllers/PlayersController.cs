@@ -15,6 +15,27 @@ namespace RatesOfPlayers.Infrastructure.Web.Players.Controllers;
 public class PlayersController(ISender mediator, IMapper mapper) : Controller
 {
     /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    [HttpGet]
+    public async Task<IActionResult> Report(GetReportViewModel model)
+    {
+        // Создание запроса с указанным ID игрока
+        var query = mapper.Map<GetReportQuery>(model);
+        
+        // Отправка запроса через медиатор
+        var players = await mediator.Send(query);
+        
+        // Преобразование данных в ViewModel
+        var viewModel = mapper.Map<IEnumerable<PlayerReportViewModel>>(players);
+        
+        // Возврат представления с данными
+        return View(viewModel);
+    }
+    
+    /// <summary>
     /// Отображает список всех игроков
     /// </summary>
     /// <returns>Представление со списком игроков</returns>
